@@ -37,7 +37,7 @@
 }
 .logout{
     margin-left: auto;
-
+    cursor: pointer;
 }
 .userLogo{
     margin-left: 16px;
@@ -54,8 +54,14 @@
     font-weight: 400;
     line-height: normal;
     margin-bottom: 12px;
+    cursor: pointer;
 }
-
+.nav-detail:hover{
+    color:#3730A3;
+}
+.nav-detail.active {
+    color: #3730A3;; /* 클릭시 텍스트 색상 */
+  }
 section {
     border: 1px solid #EDEDED;
     width: 234px;
