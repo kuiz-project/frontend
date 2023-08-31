@@ -5,7 +5,7 @@ import { ReactComponent as User } from '../images/Ellipse 2.svg';
 import { ReactComponent as Logout } from '../images/logoutbutton.svg';
 
 const MainPage = () => {
-    const [activenav, setActivenav] = useState(null);
+    const [activenav, setActivenav] = useState(0);
 
     const handleClick = (index) => {
         setActivenav(index);
@@ -48,7 +48,25 @@ const MainPage = () => {
             </section>
             <div>
             </div>
-            <footer></footer>
+            <footer>
+                <div className="generate_footer">
+                    <div className="multiple">
+                        <div>객관식</div>
+                        <div>
+                            <div>숫자</div>
+                            <div>버튼</div>
+                        </div>
+                    </div>
+                    <div className="subjective">
+                        <div>주관식</div>
+                        <div>
+                            <div>숫자</div>
+                            <div>버튼</div>
+                        </div>
+                    </div>
+                    <div className="generate"></div>
+                </div>
+            </footer>
         </div>
     );
 }

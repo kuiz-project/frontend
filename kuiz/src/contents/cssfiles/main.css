@@ -87,4 +87,18 @@ footer {
     border: 1px solid #E1E1E1;
     background: #FFF;
     z-index: 1000;
+
+}
+.generate_footer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.multiple{
+    display: flex;
+    flex-direction: row;
+}
+.subjective{
+    display: flex;
+    flex-direction: row;
 }
