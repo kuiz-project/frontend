@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ReactComponent as Trash } from '../images/trash.svg';
 import { ReactComponent as Add } from '../images/add.svg';
 import { ReactComponent as Search } from '../images/search.svg';
+import { ReactComponent as Upload } from '../images/uploadButton.svg';
+import { ReactComponent as Cancel } from '../images/cancel.svg';
 
 export const UploadView = () => {
     return (
@@ -17,11 +19,15 @@ export const UploadView = () => {
                     </div>
                     <div className="upload_search">
                         <div><input className="search" type="text"
-                        placeholder="ㄴㅇ"/></div>
+                        placeholder="검색"/></div>
                         <div>여기에 이제 리스트 쫙</div>
                     </div>
                 </div>
-                <div className="upload_mid_bottom"></div>
+                <div className="upload_mid_bottom">
+                    <div className="fileSelect">파일선택</div>
+                    <Upload className='fileUpload'/>
+                    <Cancel className='fileUploadCancel'/>
+                </div>
             </div>
             <div className="upload_right_section">KUIZ 추천 포지션</div>
             <footer>
