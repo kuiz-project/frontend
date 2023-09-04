@@ -13,7 +13,7 @@ const LoginPage = () => {
         <div className='loginPage'>
             <header>
                 <div className='header_logo'><Logo /></div>
-                <span className='header_text'>로그인</span>
+                <div className='header_text'>로그인</div>
             </header>
             <main>
                 <div className='idpw'>
