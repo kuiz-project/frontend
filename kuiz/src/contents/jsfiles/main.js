@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { GenerateView } from "./generatequestions";
 import { UploadView } from "./upload";
+import { MyTest } from './mytest';
 import '../cssfiles/main.css';
+import '../cssfiles/mytest.css';
 import { ReactComponent as Logo } from '../images/logo.svg';
 import { ReactComponent as User } from '../images/Ellipse 2.svg';
 import { ReactComponent as Logout } from '../images/logoutbutton.svg';
@@ -17,6 +19,9 @@ const MainPage = () => {
         }
         if (activenav === 1) {
             return <UploadView/>;
+        }
+        if (activenav === 2){
+            return <MyTest/>;
         }
         // 다른 뷰에 대한 조건도 추가 가능
         return null;

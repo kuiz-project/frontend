@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ReactComponent as Trash } from '../images/trash.svg';
 import { ReactComponent as Add } from '../images/add.svg';
-import { ReactComponent as Search } from '../images/search.svg';
+//import { ReactComponent as Search } from '../images/search.svg';
 import { ReactComponent as Upload } from '../images/uploadButton.svg';
 import { ReactComponent as Cancel } from '../images/cancel.svg';
 import { ReactComponent as Close } from '../images/dir_close.svg';
