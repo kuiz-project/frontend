@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
-
+import { ReactComponent as Left } from '../images/left.svg';
+import { ReactComponent as Right } from '../images/right.svg';
+import { ReactComponent as ResultButton } from '../images/resultbutton.svg';
 
 export const MyTest = () => {
+    const [selected, setSelected] = useState(null);
 
+    // 클릭 이벤트 핸들러
+    const handleDivClick = (index) => {
+        if (selected === index) {
+            setSelected(null);  // 이미 선택된 div를 다시 클릭하면 선택을 해제
+        } else {
+            setSelected(index);  // 새로운 div를 클릭하면 그 div를 선택
+        }
+    }
+
+    const testData = [
+        { b1: 'fkfkfkfkfk', b2: '운체제', b3: 'PDF 이름_번호', b4: '210', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' },
+        { b1: 'ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러', b2: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ', b3: 'ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호', b4: '2', b5: '2023.01.02', b6: '13/20' }
+        // ... (나머지 데이터)
+    ];
     return (
         <div className='mytest'>
             <div className='mytest_left'>
@@ -19,53 +41,35 @@ export const MyTest = () => {
                         <div className='h5'>출제일</div>
                         <div className='h6'>점수</div>
                     </div>
-                    <div className='left_body_body'>
-                        <div className='left_body_contents'>
-                            <div className='b1'>fkfkfkfkfk</div>
-                            <div className='b2'>운체제</div>
-                            <div className='b3'>PDF 이름_번호</div>
-                            <div className='b4'>210</div>
-                            <div className='b5'>2023.01.02</div>
-                            <div className='b6'>13/20</div>
+                    {testData.map((data, index) => (
+                        <div
+                            key={index}
+                            className='left_body_contents'
+                            style={
+                                selected === index 
+                                ? { borderRadius: '12px', background: '#E3E6F2' }
+                                : selected === index + 1 
+                                ? { border:'none' } 
+                                : {}
+                            }
+                            onClick={() => handleDivClick(index)}
+                        >
+                            <div className='b1'>{data.b1}</div>
+                            <div className='b2'>{data.b2}</div>
+                            <div className='b3'>{data.b3}</div>
+                            <div className='b4'>{data.b4}</div>
+                            <div className='b5'>{data.b5}</div>
+                            <div className='b6'>{data.b6}</div>
                         </div>
-                        <div className='left_body_contents'>
-                            <div className='b1'>ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러</div>
-                            <div className='b2'>ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ</div>
-                            <div className='b3'>ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호</div>
-                            <div className='b4'>2</div>
-                            <div className='b5'>2023.01.02</div>
-                            <div className='b6'>13/20</div>
-                        </div>
-                        <div className='left_body_contents'>
-                            <div className='b1'>디렉토리명</div>
-                            <div className='b2'>운영체제</div>
-                            <div className='b3'>PDF 이름_번호</div>
-                            <div className='b4'>23</div>
-                            <div className='b5'>2023.04.02</div>
-                            <div className='b6'>3/20</div>
-                        </div>
-                        <div className='left_body_contents'>
-                            <div className='b1'>디렉토리명</div>
-                            <div className='b2'>운영체제</div>
-                            <div className='b3'>PDF 이름_번호</div>
-                            <div className='b4'>23</div>
-                            <div className='b5'>2023.04.02</div>
-                            <div className='b6'>3/20</div>
-                        </div>
-                        <div className='left_body_contents'>
-                            <div className='b1'>디렉토리명</div>
-                            <div className='b2'>운영체제</div>
-                            <div className='b3'>PDF 이름_번호</div>
-                            <div className='b4'>23</div>
-                            <div className='b5'>2023.04.02</div>
-                            <div className='b6'>10/20</div>
-                        </div>
+                    ))}
+                    <div className='left_body_footer'>
+                        <Left />123<Right />
                     </div>
                 </div>
             </div>
             <div className='mytest_right'></div>
             <footer>
-
+                <ResultButton className='resbutton' />
             </footer>
         </div>
     );

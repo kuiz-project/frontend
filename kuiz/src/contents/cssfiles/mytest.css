@@ -49,7 +49,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 180px;
+    
 }
 
 .left_body_header {
@@ -92,6 +92,7 @@
     line-height: normal;
     border-bottom: 1px solid #DAD7D7;
     align-items: center;
+    cursor: pointer;
 }
 
 .h1,.h2,.h3,.h4,.h5,.h6 {
@@ -117,4 +118,19 @@
 
 .b1 {
     margin-left: 30px;
+}
+.left_body_footer{
+    margin-top: 50px;
+    margin-bottom: 220px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.resbutton{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: 20px;
+    cursor: pointer;
 }
