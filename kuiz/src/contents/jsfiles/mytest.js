@@ -46,11 +46,11 @@ export const MyTest = () => {
                             key={index}
                             className='left_body_contents'
                             style={
-                                selected === index 
-                                ? { borderRadius: '12px', background: '#E3E6F2' }
-                                : selected === index + 1 
-                                ? { border:'none' } 
-                                : {}
+                                selected === index
+                                    ? { borderRadius: '12px', background: '#E3E6F2' }
+                                    : selected === index + 1
+                                        ? { border: 'none' }
+                                        : {}
                             }
                             onClick={() => handleDivClick(index)}
                         >
@@ -69,7 +69,16 @@ export const MyTest = () => {
             </div>
             <div className='mytest_right'></div>
             <footer>
-                <ResultButton className='resbutton' />
+                <ResultButton
+                    className='resbutton'
+                    onClick={() => {
+                        if (selected === null) {
+                            alert("PDF 선택하셔야죠 인간?");
+                        } else {
+                            alert(`${selected + 1}번째 PDF를 누르셨네요!!`);
+                        }
+                    }}
+                />
             </footer>
         </div>
     );
