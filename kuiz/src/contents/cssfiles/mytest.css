@@ -134,3 +134,32 @@
     margin-right: 20px;
     cursor: pointer;
 }
+.left_body_footer_lists{
+    margin-left: 10px;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: row;
+}
+.left_body_footer_list{
+    display: flex;
+    flex-direction: row;
+    border-radius: 50%;
+    width: 24px;
+height: 24px;
+flex-shrink: 0;
+justify-content: center;
+align-items: center;
+margin-top: 3px;
+fill: var(--Main, #312E81);
+margin-right: 5px;
+font-family: Noto Sans KR;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+cursor: pointer;
+}
+.button{
+    margin-top: 3px;
+    cursor: pointer;
+}

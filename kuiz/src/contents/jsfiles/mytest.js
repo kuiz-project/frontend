@@ -5,6 +5,7 @@ import { ReactComponent as ResultButton } from '../images/resultbutton.svg';
 
 export const MyTest = () => {
     const [selected, setSelected] = useState(null);
+    const [selectedPage, setSelectedPage] = useState(0);
 
     // 클릭 이벤트 핸들러
     const handleDivClick = (index) => {
@@ -63,7 +64,35 @@ export const MyTest = () => {
                         </div>
                     ))}
                     <div className='left_body_footer'>
-                        <Left />123<Right />
+                        <Left
+                            className='button'
+                            onClick={() => {
+                                if (selectedPage > 0) { // 0보다 클 때만 감소
+                                    setSelectedPage(prevPage => prevPage - 1);
+                                }
+                            }}
+                        />
+                        <div className='left_body_footer_lists'>
+                            {Array(3).fill(null).map((_, pageIndex) => (
+                                <div
+                                    key={pageIndex}
+                                    className='left_body_footer_list'
+                                    style={selectedPage === pageIndex ? { backgroundColor: 'blue', color: 'white' } : {}}
+                                    onClick={() => setSelectedPage(pageIndex)}
+                                >
+                                    {pageIndex + 1}
+                                </div>
+                            ))}
+                        </div>
+                        <Right
+                            className='button'
+                            onClick={() => {
+                                // 최대 페이지 수 2 (0-based index)를 넘기지 않도록 조건 추가
+                                if (selectedPage < 2) {
+                                    setSelectedPage(prevPage => prevPage + 1);
+                                }
+                            }}
+                        />
                     </div>
                 </div>
             </div>
