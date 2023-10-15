@@ -13,6 +13,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { currentFileState, directoryState } from "../../recoil/atom";
 import {
   createfolderPostAPI,
+  deletefoldernameAPI,
   myfolderAPI,
   pdfsubjectAPI,
   updatefoldernameAPI,
@@ -170,18 +171,35 @@ const Upload = () => {
     }
   };
 
-  // directory 클릭
-  const handleDirectoryClick = (dirId) => {
-    if (!isEditMode) {
-      const newDirectories = directories.map((directory) => {
-        if (directory.folder_id === dirId) {
-          return { ...directory, isSelected: !directory.isSelected };
-        } else {
-          return { ...directory, isSelected: false };
+  // 폴더 삭제
+  const handleDirectoryDelete = async () => {
+    const target = directories.filter((directory) => directory.isSelected)[0];
+    if (target) {
+      try {
+        const res = await deletefoldernameAPI.delete(
+          JSON.stringify(target.folder_id)
+        );
+        if (res.status === 200) {
+          fetchData();
         }
-      });
-      setDirectories(newDirectories);
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log("디렉토리를 누르고 삭제해주세요");
     }
+  };
+
+  // 폴더 클릭
+  const handleDirectoryClick = (dirId) => {
+    const newDirectories = directories.map((directory) => {
+      if (directory.folder_id === dirId) {
+        return { ...directory, isSelected: !directory.isSelected };
+      } else {
+        return { ...directory, isSelected: false };
+      }
+    });
+    setDirectories(newDirectories);
   };
 
   // 더블클릭하여 directory 수정 모드
@@ -277,7 +295,7 @@ const Upload = () => {
               <S.CompleteBtn onClick={() => setIsEditMode(false)}>
                 완료
               </S.CompleteBtn>
-              <S.DeleteBtn>
+              <S.DeleteBtn onClick={handleDirectoryDelete}>
                 <img src={trash} alt="삭제 버튼" />
               </S.DeleteBtn>
             </>
@@ -285,8 +303,8 @@ const Upload = () => {
             <S.EditBtn onClick={() => setIsEditMode(true)}>편집</S.EditBtn>
           )}
 
-          <S.AddBtn>
-            <img src={add} alt="추가 버튼" onClick={handleDirectoryAdd} />
+          <S.AddBtn onClick={handleDirectoryAdd}>
+            <img src={add} alt="추가 버튼" />
           </S.AddBtn>
         </S.SideBarHeader>
         <S.SectionListBox>

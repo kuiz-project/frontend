@@ -47,8 +47,6 @@ export const createfolderPostAPI = axios.create({
   withCredentials: true,
 });
 
-// 폴더 변경
-
 // 폴더 조회
 export const myfolderAPI = axios.create({
   baseURL: `${BASE_URL}/api/folder/my-folders`,
@@ -59,6 +57,13 @@ export const myfolderAPI = axios.create({
 export const updatefoldernameAPI = axios.create({
   method: "patch",
   baseURL: `${BASE_URL}/api/folder/update-name`,
+  withCredentials: true,
+});
+
+// 폴더 삭제
+export const deletefoldernameAPI = axios.create({
+  method: "delete",
+  baseURL: `${BASE_URL}/api/folder/delete`,
   withCredentials: true,
 });
 
