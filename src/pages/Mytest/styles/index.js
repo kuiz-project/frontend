@@ -52,7 +52,8 @@ export const MytestWrapper = styled.div`
 
     .left_body {
       width: 80%;
-      height: 80%;
+      height: 50%;
+      margin-bottom:150px;
       display: flex;
       flex-direction: column;
       
@@ -146,6 +147,7 @@ export const MytestWrapper = styled.div`
       flex-direction: row;
       margin-left: auto;
       margin-right: 20px;
+      margin-top:5px;
       cursor: pointer;
     }
     .nresbutton {
@@ -153,6 +155,7 @@ export const MytestWrapper = styled.div`
       flex-direction: row;
       margin-left: auto;
       margin-right: 20px;
+      
       cursor: default;
     }
     .left_body_footer_lists {
@@ -188,9 +191,8 @@ export const MytestWrapper = styled.div`
     .mytest_footer{
       width:100%;
       height:92px;
-      bottom:0;
-      padding-top:15px;
-      margin-bottom:88px;
+      bottom:-90px;
+     
       border-top: 1px solid #E1E1E1;
 background: #FFF;
 
