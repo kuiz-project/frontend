@@ -21,8 +21,7 @@ import {
 
 const Upload = () => {
   const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
-  const [directories, setDirectories] = useRecoilState(directoryState); // 폴더 데이터 가져오기
-  console.log(directories);
+  const [directories, setDirectories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
   const fileType = ["application/pdf"];
@@ -290,7 +289,10 @@ const Upload = () => {
                   {directory.pdfDtos?.map((pdf) => (
                     <S.FileItemWrapper
                       key={pdf.pdf_id}
-                      onClick={() => handleFileClick(directory.id, pdf.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleFileClick(directory.id, pdf.pdf_id);
+                      }}
                       isSelected={pdf.isSelected}
                     >
                       {pdf.isEdit ? (
