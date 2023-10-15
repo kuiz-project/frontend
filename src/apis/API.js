@@ -82,6 +82,9 @@ export const deletepdfAPI = axios.create({
   method: "delete",
   baseURL: `${BASE_URL}/api/pdf/delete`,
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
 });
 
 // 사용자가 업로드한 pdf 조회

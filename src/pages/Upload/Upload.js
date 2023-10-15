@@ -223,10 +223,9 @@ const Upload = () => {
       if (dir.pdfDtos) {
         const newFiles = dir.pdfDtos.map((file) => {
           if (dir.folder_id === dirId && file.pdf_id === fileId) {
-            console.log("gg");
-            return { ...file, isSelected: true };
+            return { ...file, isSelected: !file.isSelected };
           } else {
-            return { ...file, isSelected: false, isEdit: false };
+            return { ...file, isEdit: false };
           }
         });
         return { ...dir, pdfDtos: newFiles };
@@ -234,6 +233,8 @@ const Upload = () => {
     });
     setDirectories(newDirectories);
   };
+
+  const handleFileDelete = (dirId, fileId) => {};
   return (
     <S.UploadWrapper>
       <S.SideBarWrapper>
