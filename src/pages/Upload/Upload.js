@@ -219,17 +219,20 @@ const Upload = () => {
   const EditFileName = (pdfId) => {};
   // (파일 클릭) 업로드 할 때는 전체 디렉토리에서 하나만 클릭 가능
   const handleFileClick = (dirId, fileId) => {
-    // const newDirectories = directories.map((dir) => {
-    //   const newDetails = dir.details.map((file) => {
-    //     if (dir.id === dirId && file.id === fileId) {
-    //       return { ...file, isSelected: true };
-    //     } else {
-    //       return { ...file, isSelected: false, isEdit: false };
-    //     }
-    //   });
-    //   return { ...dir, details: newDetails };
-    // });
-    // setDirectories(newDirectories);
+    const newDirectories = directories.map((dir) => {
+      if (dir.pdfDtos) {
+        const newFiles = dir.pdfDtos.map((file) => {
+          if (dir.folder_id === dirId && file.pdf_id === fileId) {
+            console.log("gg");
+            return { ...file, isSelected: true };
+          } else {
+            return { ...file, isSelected: false, isEdit: false };
+          }
+        });
+        return { ...dir, pdfDtos: newFiles };
+      }
+    });
+    setDirectories(newDirectories);
   };
   return (
     <S.UploadWrapper>
@@ -291,7 +294,7 @@ const Upload = () => {
                       key={pdf.pdf_id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleFileClick(directory.id, pdf.pdf_id);
+                        handleFileClick(directory.folder_id, pdf.pdf_id);
                       }}
                       isSelected={pdf.isSelected}
                     >
