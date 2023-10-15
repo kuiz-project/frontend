@@ -4,7 +4,6 @@ import close from "../../assets/images/dir_close.svg";
 import open from "../../assets/images/dir_open.svg";
 import add from "../../assets/images/add.svg";
 import trash from "../../assets/images/trash.svg";
-import search from "../../assets/images/search.svg";
 import edit from "../../assets/images/edit.svg";
 import * as S from "./styles/index";
 import pdfuploadN from "../../assets/images/pdfupload_n.svg";
@@ -19,86 +18,6 @@ import {
   updatefoldernameAPI,
 } from "./../../apis/API";
 
-const initialDirectories = [
-  {
-    folder_name: "디렉토리명",
-    isSelected: false,
-    isEdit: false,
-    folder_id: 1,
-
-    pdfDtos: [
-      {
-        pdf_id: 1,
-        file_name: "PDF 파일명 1",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 2,
-        file_name: "PDF 파일명 2",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 3,
-        file_name: "PDF 파일명 3",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 4,
-        file_name: "PDF 파일명 4",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 5,
-        file_name: "PDF 파일명 5",
-        isSelected: false,
-        isEdit: false,
-      },
-    ],
-  },
-  {
-    folder_name: "디렉토리명2",
-    isSelected: false,
-    isEdit: false,
-    folder_id: 2,
-    pdfDtos: [
-      {
-        pdf_id: 1,
-        file_name: "PDF 파일명 1",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 2,
-        file_name: "PDF 파일명 2",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 3,
-        file_name: "PDF 파일명 3",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 4,
-        file_name: "PDF 파일명 4",
-        isSelected: false,
-        isEdit: false,
-      },
-      {
-        pdf_id: 5,
-        file_name: "PDF 파일명 5",
-        isSelected: false,
-        isEdit: false,
-      },
-    ],
-  },
-];
-
 const Upload = () => {
   const [pdfFile, setpdfFile] = useState(null);
   const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
@@ -106,13 +25,10 @@ const Upload = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
   const fileType = ["application/pdf"];
-  const [searchValue, setSearchValue] = useState("");
   const [subjects, setSubjects] = useState([]);
   /* 디렉토리 수정 텍스트 */
   const [directoryEditText, setDirectoryEditText] = useState("");
-
-  /* 파일 수정 텍스트 */
-  const [fileEditText, setFileEditText] = useState();
+  const [fileEditText, setFileEditText] = useState(false);
 
   const fetchInitialData = async () => {
     const res = await myfolderAPI.get();
@@ -127,7 +43,13 @@ const Upload = () => {
         setDirectories(updatedDirectories);
       }
       if (res2.status === 200) {
-        setSubjects(res2.data.subject);
+        const updatedSubjects = res2.data.subject.map((subject) => {
+          return {
+            subjectName: subject,
+            isSelected: false,
+          };
+        });
+        setSubjects(updatedSubjects);
       }
     } catch (e) {
       console.log(e);
@@ -149,14 +71,6 @@ const Upload = () => {
   useEffect(() => {
     // 초기 폴더 데이터 로드
     fetchInitialData();
-  }, []);
-  useEffect(() => {
-    const updatedDirectories = initialDirectories.map((directory) => ({
-      ...directory,
-      isSelected: false,
-      isEdit: false,
-    }));
-    setDirectories(updatedDirectories);
   }, []);
 
   // 폴더 추가
@@ -191,34 +105,36 @@ const Upload = () => {
   };
 
   // 폴더 클릭
-  const handleDirectoryClick = (dirId) => {
-    const newDirectories = directories.map((directory) => {
-      if (directory.folder_id === dirId) {
-        return { ...directory, isSelected: !directory.isSelected };
-      } else {
-        return { ...directory, isSelected: false };
-      }
-    });
-    setDirectories(newDirectories);
-  };
-
-  // 더블클릭하여 directory 수정 모드
-  const handleDirectoryDoubleClick = (dirId) => {
-    if (isEditMode && dirId !== 1) {
+  const handleDirectoryClick = (dir) => {
+    if (!dir.isEdit) {
       const newDirectories = directories.map((directory) => {
-        if (directory.folder_id === dirId) {
-          return { ...directory, isEdit: true };
+        if (directory.folder_id === dir.folder_id) {
+          return { ...directory, isSelected: !directory.isSelected };
         } else {
-          return { ...directory, isEdit: false };
+          return { ...directory, isSelected: false, isEdit: false };
         }
       });
       setDirectories(newDirectories);
     }
   };
 
+  // 더블클릭하여 directory 수정 모드
+  const handleDirectoryDoubleClick = (dir) => {
+    if (isEditMode) {
+      const newDirectories = directories.map((directory) => {
+        if (directory.folder_id === dir.folder_id) {
+          return { ...directory, isEdit: true };
+        } else {
+          return { ...directory, isEdit: false };
+        }
+      });
+      setFileEditText(dir.folder_name);
+      setDirectories(newDirectories);
+    }
+  };
+
   // directory 수정
   // 중복일 때 : input 해제
-  // default 폴더는 더블클릭 금지
   const handleDirectoryEdit = async (e, dirId) => {
     const submission = {
       folder_name: directoryEditText,
@@ -228,15 +144,14 @@ const Upload = () => {
     if (e.keyCode === 13) {
       try {
         const res = await updatefoldernameAPI.patch("", submission);
+        console.log(res);
         if (res.status === 200) {
           fetchData();
           setDirectoryEditText("");
         }
       } catch (e) {
         // 폴더명 중복
-        if (e.response.data.error.includes("중복")) {
-          fetchData();
-        }
+        console.log(e);
       }
     }
   };
@@ -245,9 +160,15 @@ const Upload = () => {
     setDirectoryEditText(e.target.value);
   };
 
-  // 검색어
-  const handleSearch = (e) => {
-    setSearchValue(e.target.value);
+  const handleToggleSubject = (sub) => {
+    const updatedSubjects = subjects.map((subject) => {
+      if (subject === sub) {
+        return { ...subject, isSelected: true };
+      } else {
+        return { ...subject, isSelected: false };
+      }
+    });
+    setSubjects(updatedSubjects);
   };
 
   // 파일 선택
@@ -311,9 +232,9 @@ const Upload = () => {
           {directories?.map((directory, idx) => (
             <S.DirBox
               key={directory.folder_id}
-              onClick={() => handleDirectoryClick(directory.folder_id)}
+              onClick={() => handleDirectoryClick(directory)}
               onDoubleClick={() => {
-                handleDirectoryDoubleClick(directory.folder_id);
+                handleDirectoryDoubleClick(directory);
               }}
             >
               <S.DirTitle isSelected={directory.isSelected}>
@@ -375,21 +296,34 @@ const Upload = () => {
           ))}
         </S.SectionListBox>
       </S.SideBarWrapper>
-      <S.Wrapper>
+      <S.MainWrapper>
         <S.LectureUploadWrapper>
-          <S.Directory>
-            <S.DirectoryName>디렉토리명</S.DirectoryName>
-          </S.Directory>
-          <S.LectureWrapper>
-            <S.UploadName>강의명</S.UploadName>
-            <S.UploadSearch>
-              <S.SearchList>
-                {subjects.map((subject) => (
-                  <S.SearchItem>{subject}</S.SearchItem>
-                ))}
-              </S.SearchList>
-            </S.UploadSearch>
-          </S.LectureWrapper>
+          <S.SelectWrapper>
+            <S.SelectTitle>디렉토리명</S.SelectTitle>
+            <S.List>
+              {directories.map((directory) => (
+                <S.SelectItem
+                  isSelected={directory.isSelected}
+                  onClick={() => handleDirectoryClick(directory)}
+                >
+                  {directory.folder_name}
+                </S.SelectItem>
+              ))}
+            </S.List>
+          </S.SelectWrapper>
+          <S.SelectWrapper>
+            <S.SelectTitle>강의명</S.SelectTitle>
+            <S.List>
+              {subjects.map((subject) => (
+                <S.SelectItem
+                  isSelected={subject.isSelected}
+                  onClick={() => handleToggleSubject(subject)}
+                >
+                  {subject.subjectName}
+                </S.SelectItem>
+              ))}
+            </S.List>
+          </S.SelectWrapper>
           <S.FileUploadWrapper>
             <S.UploadBox>
               <input
@@ -403,10 +337,12 @@ const Upload = () => {
             </S.UploadBox>
           </S.FileUploadWrapper>
         </S.LectureUploadWrapper>
-        <S.footer>
-          <img src={pdfuploadN} alt="pdf 업로드 전 버튼" />
-        </S.footer>
-      </S.Wrapper>
+        <S.Footer>
+          <S.UploadBtn>
+            <img src={pdfuploadN} alt="pdf 업로드 전 버튼" />
+          </S.UploadBtn>
+        </S.Footer>
+      </S.MainWrapper>
     </S.UploadWrapper>
   );
 };

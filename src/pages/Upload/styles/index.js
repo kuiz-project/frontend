@@ -77,14 +77,14 @@ export const DirBox = styled.button`
   align-items: center;
   gap: 8px;
 `;
-export const Wrapper = styled.section`
+export const MainWrapper = styled.section`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: 234px;
+  padding-left: 234px;
 `;
 export const EditBtn = styled.button`
   color: #555;
@@ -126,104 +126,50 @@ export const LectureUploadWrapper = styled.section`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  gap: 24px;
 `;
 
-export const Directory = styled.div`
+export const SelectWrapper = styled.div`
   border-radius: 16px;
   width: 90%;
-  height: 112px;
+  height: 200px;
   background-color: white;
-  margin-bottom: 20px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.12);
   display: flex;
-  flex-direction: row;
-`;
-
-export const LectureWrapper = styled.div`
-  border-radius: 16px;
-  width: 90%;
-  height: 290px;
-  background: var(--Text_White, #fff);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.12);
-  display: flex;
-  gap: 55px;
-  position: relative;
-  padding: 28px 140px 16px 58px;
+  align-items: center;
+  padding: 20px;
   overflow: scroll;
+  justify-content: space-around;
   // webkit 렌더링 엔진에서 스크롤 바 숨기기
   &::-webkit-scrollbar {
     /* This is the magic bit for WebKit */
     display: none;
   }
-  margin-bottom: 20px;
 `;
 
-export const UploadName = styled.span`
-  padding-top: 10px;
+export const SelectTitle = styled.div`
   color: #000;
   font-family: Noto Sans KR_Medium;
   font-size: 20px;
-  position: fixed;
 `;
 
-export const UploadSearch = styled.span`
+export const List = styled.span`
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  height: 100%;
-  width: 250px;
-`;
-
-export const UploadTopSearch = styled.span`
-  border-radius: 62px;
-  height: 48px;
-  width: 400px;
-  top: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  img {
-    position: absolute;
-    padding: 8px 16px;
-  }
-`;
-
-export const SearchInput = styled.input`
-  height: 48px;
-  width: 100%;
-  border-radius: 50px;
-  display: flex;
-  background: var(--Gray_3, #f9f9f9);
-  border: none;
-  outline: none;
-  font-size: 16px;
-  padding-left: 50px;
-  &:focus {
-    border: none;
-    outline: none;
-  }
-`;
-
-export const SearchList = styled.span`
-  margin-left: 100px;
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
   width: 400px;
-  background-color: red;
 `;
 
-export const SearchItem = styled.button`
+export const SelectItem = styled.button`
   height: 45px;
   padding: 16px 24px;
   border-radius: 8px;
   border: 1px solid #e1e1e1;
-  color: var(--Text_Gray, #a3a3a3);
-  font-size: 18px;
+  color: ${({ isSelected }) => (isSelected ? "#3730A3" : "#A3A3A3")};
+  font-size: 20px;
+
   display: flex;
   align-items: center;
-  align-self: flex-start;
 `;
 
 export const FileUploadWrapper = styled.div`
@@ -299,49 +245,22 @@ export const FileName = styled.span`
 
 export const FileEditBtn = styled.button`
   span {
-    font-size: 13px;
+    font-size: 3px;
   }
 `;
 
-export const ViewWrapper = styled.div``;
-export const footer = styled.div`
+export const Footer = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
-  padding-right: 64px;
   width: 100%;
   height: 92px;
   border-top: 1px solid #e1e1e1;
-  background: #fff;
-
-  /* header */
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
   position: fixed;
   bottom: 0;
   z-index: 10000;
-  margin-left: -234px;
 `;
-export const DirectoryName = styled.div`
-  margin-top: 45px;
-  padding-left: 25px;
-  color: #000;
-  font-family: Noto Sans KR_Medium;
-  font-size: 20px;
-`;
-export const DirectorySearch = styled.div`
-  border-radius: 62px;
-  margin-top: 30px;
-  margin-left: 50px;
-  height: 48px;
-  width: 400px;
-  top: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  img {
-    position: absolute;
-    padding: 8px 16px;
-  }
+export const UploadBtn = styled.button`
+  position: fixed;
+  right: 64px;
 `;
