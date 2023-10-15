@@ -16,12 +16,13 @@ import {
   myfolderAPI,
   pdfsubjectAPI,
   updatefoldernameAPI,
+  uploadpdfAPI,
 } from "./../../apis/API";
 
 const Upload = () => {
-  const [pdfFile, setpdfFile] = useState(null);
   const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
   const [directories, setDirectories] = useRecoilState(directoryState); // 폴더 데이터 가져오기
+  console.log(directories);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
   const fileType = ["application/pdf"];
@@ -29,6 +30,8 @@ const Upload = () => {
   /* 디렉토리 수정 텍스트 */
   const [directoryEditText, setDirectoryEditText] = useState("");
   const [fileEditText, setFileEditText] = useState(false);
+  const fileInputRef = useRef(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
 
   const fetchInitialData = async () => {
     const res = await myfolderAPI.get();
@@ -173,18 +176,40 @@ const Upload = () => {
 
   // 파일 선택
   const handleChange = (e) => {
+    const formData = new FormData();
+
+    const targetDirectory = Number(directories.filter((dir) => dir.isSelected));
+    const targetSubject = subjects.filter((subject) => subject.isSelected);
+    if (!targetDirectory || !targetSubject) {
+      console.log("디렉토리와 강의명 모두 선택해야합니다.");
+      return;
+    }
+    const targetDirectoryId = targetDirectory[0].folder_id;
+    const targetSubjectName = targetSubject[0].subjectName;
+
+    formData.append("file", e.target.files[0]);
+    formData.append("subject", targetSubjectName);
+    formData.append("folder", targetDirectoryId);
+
+    setSelectedFileName(e.target.files[0].name);
     let selectedFile = e.target.files[0];
     if (selectedFile) {
       if (selectedFile && fileType.includes(selectedFile.type)) {
         let reader = new FileReader();
         reader.readAsDataURL(selectedFile);
-        reader.onload = (e) => {
-          setpdfFile(e.target.result);
+        reader.onload = async (e) => {
           setCurrentFile(e.target.result);
-          navigate("/pdf");
+          try {
+            const res = await uploadpdfAPI.post("", formData);
+            if (res.status === 200) {
+              // navigate("/pdf");
+            }
+          } catch (e) {
+            console.log(e);
+          }
         };
       } else {
-        setpdfFile(null);
+        setCurrentFile(null);
       }
     } else {
       console.log("please select");
@@ -274,7 +299,7 @@ const Upload = () => {
                           onChange={(e) => setFileEditText(e.target.value)}
                         />
                       ) : (
-                        <S.FileName>{pdf.name}</S.FileName>
+                        <S.FileName>{pdf.file_name}</S.FileName>
                       )}
                       <S.FileEditBtn
                         onClick={(e) => {
@@ -330,9 +355,21 @@ const Upload = () => {
                 type="file"
                 className="hiddenInput"
                 onChange={handleChange}
+                ref={fileInputRef}
               />
+              <label
+                className="customFileUpload"
+                // 라벨을 클릭 => input 클릭
+                onClick={() => fileInputRef.current.click()}
+              >
+                {selectedFileName || "파일 선택(pdf 확장자만 가능)"}
+              </label>
               <S.UploadCancelBtn>
-                <img src={cancel} alt="취소 버튼" />
+                <img
+                  src={cancel}
+                  alt="취소 버튼"
+                  onClick={() => setSelectedFileName("")}
+                />
               </S.UploadCancelBtn>
             </S.UploadBox>
           </S.FileUploadWrapper>

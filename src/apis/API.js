@@ -1,8 +1,7 @@
 import axios from "axios";
 const BASE_URL = "http://localhost:8080";
-/**
- * 사용자 관리
- */
+
+/* 사용자관리 */
 
 // 회원가입
 export const userPostAPI = axios.create({
@@ -73,6 +72,9 @@ export const uploadpdfAPI = axios.create({
   method: "post",
   baseURL: `${BASE_URL}/api/pdf/upload`,
   withCredentials: true,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
 });
 
 // PDF 삭제

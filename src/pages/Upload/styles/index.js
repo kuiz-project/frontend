@@ -165,6 +165,7 @@ export const SelectItem = styled.button`
   padding: 16px 24px;
   border-radius: 8px;
   border: 1px solid #e1e1e1;
+  font-weight: 700;
   color: ${({ isSelected }) => (isSelected ? "#3730A3" : "#A3A3A3")};
   font-size: 20px;
 
@@ -197,6 +198,7 @@ export const UploadBox = styled.div`
     color: var(--Main_light, #3730a3);
     font-family: Noto Sans KR_Bold;
     font-size: 16px;
+    display: none;
   }
   .customFileUpload {
     color: var(--Main_light, #3730a3);
@@ -211,9 +213,8 @@ export const UploadCancelBtn = styled.button`
     width: 16px;
     height: 19px;
     position: absolute;
-    top: 12px;
+    top: 8px;
     right: 16px;
-    z-index: 5;
   }
 `;
 
