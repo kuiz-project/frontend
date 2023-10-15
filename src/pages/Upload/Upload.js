@@ -121,7 +121,8 @@ const Upload = () => {
   };
 
   // 더블클릭하여 directory 수정 모드
-  const handleDirectoryDoubleClick = (dir) => {
+  const handleDirectoryDoubleClick = (e, dir) => {
+    console.log(dir);
     if (isEditMode) {
       const newDirectories = directories.map((directory) => {
         if (directory.folder_id === dir.folder_id) {
@@ -222,10 +223,15 @@ const Upload = () => {
     const newDirectories = directories.map((dir) => {
       if (dir.pdfDtos) {
         const newFiles = dir.pdfDtos.map((file) => {
+          // 편집 모드 일때만 다중 선택 가능 else
           if (dir.folder_id === dirId && file.pdf_id === fileId) {
-            return { ...file, isSelected: !file.isSelected };
+            return { ...file, isSelected: !file.isSelected, isEdit: false };
           } else {
-            return { ...file, isEdit: false };
+            if (isEditMode) {
+              return { ...file, isEdit: false };
+            } else {
+              return { ...file, isSelected: false, isEdit: false };
+            }
           }
         });
         return { ...dir, pdfDtos: newFiles };
@@ -261,7 +267,7 @@ const Upload = () => {
             <S.DirBox
               key={directory.folder_id}
               onClick={() => handleDirectoryClick(directory)}
-              onDoubleClick={() => {
+              onDoubleClick={(e) => {
                 handleDirectoryDoubleClick(directory);
               }}
             >
