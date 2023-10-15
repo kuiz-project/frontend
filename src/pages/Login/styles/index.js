@@ -7,7 +7,6 @@ export const LoginTitleBox = styled.div`
   max-width: 440px;
   width: 100%;
   height: 142px;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 12px;
@@ -42,11 +41,13 @@ export const LoginBtnBox = styled.div`
 `;
 
 export const LoginBtn = styled.button`
+  margin-top: 40px;
   display: flex;
   height: 48px;
   width: 100%;
   justify-content: center;
   align-items: center;
+  margin-left: -30px;
   border-radius: 44px;
   background: var(--Main, #312e81);
   color: var(--Text_White, #fff);
@@ -56,6 +57,7 @@ export const LoginBtn = styled.button`
 
 export const SignupBtn = styled.button`
   display: flex;
+  margin-left: -30px;
   width: 100%;
   height: 48px;
   justify-content: center;
@@ -66,4 +68,25 @@ export const SignupBtn = styled.button`
   font-size: 16px;
   border-radius: 44px;
   border: 1px solid var(--Main, #312e81);
+`;
+export const SignupWrapper = styled.div`
+  max-width: 440px;
+  width: 100%;
+  height: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+`;
+export const SignupForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-end;
+  padding: 35px 57px;
+  border-radius: 12px;
+  background: var(--Text_White, #fff);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 `;

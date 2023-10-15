@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 export const SignupWrapper = styled.div`
   max-width: 440px;
   width: 100%;
-  height: 100%;
+  height: 85%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

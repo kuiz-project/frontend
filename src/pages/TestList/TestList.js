@@ -1,8 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
+import { testlistAPI } from "./../../apis/API";
 const TestList = () => {
-  // 사용자가 제출했는지 여부를 확인하는 상태
   const [submitted, setSubmitted] = useState(false);
+  const [selectedChoices, setSelectedChoices] = useState({});
+  const [answers, setAnswers] = useState({});
+  const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
+  const testId = 2;
+  useEffect(() => {
+    const fetchApiData = async () => {
+      try {
+        const response = await testlistAPI.get(`/getanswer/${testId}`); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const apiData = response.data;
+
+        const formattedQuestions = apiData.questions
+          .map((q) => {
+            if (q.type === "multiple_choices") {
+              return {
+                type: "multipleChoice",
+                main: q.question,
+                choices: q.choices || [],
+                answerIndex: q.answer,
+              };
+            } else {
+              return {
+                type: "subjective",
+                main: q.question,
+                choices: q.choices || [],
+                answerText: q.answer,
+              };
+            }
+            // 다른 문제 유형도 추가할 수 있습니다.
+            return null;
+          })
+          .filter(Boolean);
+
+        setQuestions(formattedQuestions);
+      } catch (error) {
+        console.error("Error fetching the test data:", error);
+      }
+    };
+
+    fetchApiData();
+  }, []);
+  // 사용자가 제출했는지 여부를 확인하는 상태
   const handleSubmitAnswers = () => {
     console.log("제출된 답안:", answers);
     setSubmitted(true);
@@ -11,9 +52,9 @@ const TestList = () => {
   const allQuestionsAnswered = () => {
     return Object.keys(answers).length === questions.length;
   };
-  const [selectedChoices, setSelectedChoices] = useState({});
+
   // 각 문제에 대한 답안을 저장하는 상태
-  const [answers, setAnswers] = useState({});
+
   const handleChoiceClick = (questionIndex, choiceIndex) => {
     setSelectedChoices({
       ...selectedChoices,
@@ -33,50 +74,6 @@ const TestList = () => {
     });
     console.log(`문제 ${questionIndex + 1}의 입력된 답안: ${e.target.value}`);
   };
-  // 예제 문제 데이터
-  const questions = [
-    {
-      type: "multipleChoice",
-      main: "앱이 응답하지 않으면 해당 응용 프로그램의 이름을 선택하고 강제종료를 클릭하시오",
-      choices: ["가나다라", "긔늬듸릐", "기니디리", "그느드르"],
-      answerIndex: 1,
-    },
-    {
-      type: "multipleChoice",
-      main: "최훈오 학생이 존잘인 이유를 10가지 설명하시요.",
-      choices: ["가나다라", "긔늬듸릐", "기니디리", "그느드르"],
-      answerIndex: 1,
-    },
-    {
-      type: "multipleChoice",
-      main: "앱이 응답하면 클릭하시오",
-      choices: ["가나다라", "긔늬듸릐", "기니디리", "그느드르"],
-      answerIndex: 2,
-    },
-    {
-      type: "subjective",
-      main: "이민호 학생이 존잘인 이유를 10가지 설명하시요.",
-      answerText: "이 문제의 정답 예제",
-    },
-    {
-      type: "multipleChoice",
-      main: "앱이 응답하지 않으면 해당 응용 프로그램의 이름을 선택하고 강제종료를 클릭하시오",
-      choices: ["가나다라", "긔늬듸릐", "기니디리", "그느드르"],
-      answerIndex: 2,
-    },
-    {
-      type: "subjective",
-      main: "이민호 학생이 존잘인 이유를 10가지 설명하시요.",
-      answerText: "이 문제의 정답 예제",
-    },
-    {
-      type: "multipleChoice",
-      main: "앱이 응답하지 않으면 해당 응용 프로그램의 이름을 선택하고 강제종료를 클릭하시오",
-      choices: ["가나다라", "긔늬듸릐", "기니디리", "그느드르"],
-      answerIndex: 3,
-    },
-    // ... 추가 문제들
-  ];
 
   return (
     <S.AppContainer>

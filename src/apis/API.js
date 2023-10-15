@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://3.39.190.225:8080";
+const BASE_URL = "http://localhost:8080";
 /**
  * 사용자 관리
  */
@@ -94,6 +94,18 @@ export const updatepdfAPI = axios.create({
 // pdf url 얻기(주소뒤에 pdfid 붙여서 보내기)
 export const pdfurlAPI = axios.create({
   baseURL: `${BASE_URL}/api/pdf/getpdfurl`,
+  withCredentials: true,
+});
+
+//Test 목록 받기
+export const testAPI = axios.create({
+  baseURL: `${BASE_URL}api/test/my-tests`,
+  withCredentials: true,
+});
+
+//Test 정답 빼고 받기
+export const testlistAPI = axios.create({
+  baseURL: `${BASE_URL}/api/test`,
   withCredentials: true,
 });
 

@@ -211,7 +211,6 @@ export const SearchList = styled.span`
   flex-direction: column;
   gap: 8px;
   width: 400px;
-  background-color: red;
 `;
 
 export const SearchItem = styled.button`

@@ -45,12 +45,12 @@ const LoginPage = () => {
   };
 
   return (
-    <SignupWrapper>
+    <S.SignupWrapper>
       <S.LoginTitleBox>
         <img src={logo} alt="로고 이미지" />
         <S.LoginTitle>로그인</S.LoginTitle>
       </S.LoginTitleBox>
-      <SignupForm>
+      <S.SignupForm>
         <InputBox>
           <InputTitle>아이디</InputTitle>
           <InputContent
@@ -75,8 +75,8 @@ const LoginPage = () => {
             회원가입
           </S.SignupBtn>
         </S.LoginBtnBox>
-      </SignupForm>
-    </SignupWrapper>
+      </S.SignupForm>
+    </S.SignupWrapper>
   );
 };
 
