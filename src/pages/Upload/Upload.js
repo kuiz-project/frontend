@@ -14,6 +14,7 @@ import { currentFileState, directoryState } from "../../recoil/atom";
 import {
   createfolderPostAPI,
   myfolderAPI,
+  pdfsubjectAPI,
   updatefoldernameAPI,
 } from "./../../apis/API";
 
@@ -105,46 +106,16 @@ const Upload = () => {
   const navigate = useNavigate();
   const fileType = ["application/pdf"];
   const [searchValue, setSearchValue] = useState("");
+  const [subjects, setSubjects] = useState([]);
   /* 디렉토리 수정 텍스트 */
   const [directoryEditText, setDirectoryEditText] = useState("");
 
   /* 파일 수정 텍스트 */
   const [fileEditText, setFileEditText] = useState();
 
-  const subjects = [
-    {
-      subjectName: "데이터베이스",
-      subjectId: 1,
-    },
-    {
-      subjectName: "운영체제",
-      subjectId: 2,
-    },
-    {
-      subjectName: "컴퓨터네트워크",
-      subjectId: 3,
-    },
-    {
-      subjectName: "컴퓨터회로",
-      subjectId: 4,
-    },
-
-    {
-      subjectName: "컴퓨터구조",
-      subjectId: 5,
-    },
-    {
-      subjectName: "시스템 프로그래밍",
-      subjectId: 6,
-    },
-    {
-      subjectName: "자바 프로그래밍",
-      subjectId: 7,
-    },
-  ];
-
   const fetchInitialData = async () => {
     const res = await myfolderAPI.get();
+    const res2 = await pdfsubjectAPI.get();
     try {
       if (res.status === 200) {
         const updatedDirectories = res.data.folderDtos.map((directory) => ({
@@ -154,10 +125,15 @@ const Upload = () => {
         }));
         setDirectories(updatedDirectories);
       }
+      if (res2.status === 200) {
+        setSubjects(res2.data.subject);
+      }
     } catch (e) {
       console.log(e);
     }
   };
+
+  // 폴더 받아오기
   const fetchData = async () => {
     const res = await myfolderAPI.get();
     try {
@@ -169,7 +145,6 @@ const Upload = () => {
     }
   };
 
-  // 초기 디렉토리
   useEffect(() => {
     // 초기 폴더 데이터 로드
     fetchInitialData();
@@ -392,7 +367,7 @@ const Upload = () => {
             <S.UploadSearch>
               <S.SearchList>
                 {subjects.map((subject) => (
-                  <S.SearchItem>{subject.subjectName}</S.SearchItem>
+                  <S.SearchItem>{subject}</S.SearchItem>
                 ))}
               </S.SearchList>
             </S.UploadSearch>

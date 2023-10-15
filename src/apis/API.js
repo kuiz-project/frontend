@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://3.39.190.225:8080";
+const BASE_URL = "http://localhost:8080";
 /**
  * 사용자 관리
  */
@@ -97,83 +97,7 @@ export const pdfurlAPI = axios.create({
   withCredentials: true,
 });
 
-// // directory 배열
-// const initialDirectories = [
-//   {
-//     folder_name: "디렉토리명",
-//     isSelected: false,
-//     isEdit: false,
-//     folder_id: 1,
-
-//     pdfDtos: [
-//       {
-//         pdf_id: 1,
-//         file_name: "PDF 파일명 1",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 2,
-//         file_name: "PDF 파일명 2",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 3,
-//         file_name: "PDF 파일명 3",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 4,
-//         file_name: "PDF 파일명 4",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 5,
-//         file_name: "PDF 파일명 5",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//     ],
-//   },
-//   {
-//     folder_name: "디렉토리명2",
-//     isSelected: false,
-//     isEdit: false,
-//     folder_id: 2,
-//     pdfDtos: [
-//       {
-//         pdf_id: 1,
-//         file_name: "PDF 파일명 1",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 2,
-//         file_name: "PDF 파일명 2",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 3,
-//         file_name: "PDF 파일명 3",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 4,
-//         file_name: "PDF 파일명 4",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//       {
-//         pdf_id: 5,
-//         file_name: "PDF 파일명 5",
-//         isSelected: false,
-//         isEdit: false,
-//       },
-//     ],
-//   },
-// ];
+export const pdfsubjectAPI = axios.create({
+  baseURL: `${BASE_URL}/api/pdf/subjects`,
+  withCredentials: true,
+});
