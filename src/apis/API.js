@@ -109,7 +109,7 @@ export const pdfurlAPI = axios.create({
 
 //Test 목록 받기
 export const testAPI = axios.create({
-  baseURL: `${BASE_URL}api/test/my-tests`,
+  baseURL: `${BASE_URL}/api/test/my-tests`,
   withCredentials: true,
 });
 
