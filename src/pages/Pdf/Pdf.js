@@ -16,17 +16,14 @@ const Pdf = () => {
   // 썸네일 플러그인 설정(width 조정)
 
   const thumbnailPluginInstance = thumbnailPlugin({
-    thumbnailWidth: 204,
+    thumbnailWidth: 190,
     thumbnailHeight: 124,
   });
   const { Thumbnails } = thumbnailPluginInstance;
 
   const [viewpdf, setViewpdf] = useState(null);
   const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
-  // <>
-  //   {props.pageIndex + 1}
-  //   {props.pageLabel !== `${props.pageIndex + 1}` && `(${props.pageLabel})`}
-  // </>
+  const [curPage, setCurPage] = useState(0);
   useEffect(() => {
     if (currentFile !== null) {
       setViewpdf(currentFile);
@@ -36,7 +33,7 @@ const Pdf = () => {
   }, []);
 
   const handlerPagePage = (e) => {
-    console.log(e.currentPage);
+    setCurPage(e.currentPage);
   };
 
   const pageLayout = {
