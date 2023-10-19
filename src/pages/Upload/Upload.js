@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import qs from "qs";
 import cancel from "../../assets/images/cancel.svg";
 import close from "../../assets/images/dir_close.svg";
 import open from "../../assets/images/dir_open.svg";
@@ -13,6 +14,7 @@ import { currentFileState, directoryState } from "../../recoil/atom";
 import {
   createfolderPostAPI,
   deletefoldernameAPI,
+  deletepdfAPI,
   myfolderAPI,
   pdfsubjectAPI,
   updatefoldernameAPI,
@@ -89,23 +91,43 @@ const Upload = () => {
       console.log(e);
     }
   };
-
-  // 폴더 삭제
-  const handleDirectoryDelete = async () => {
+  // 삭제
+  const handleDelete = async () => {
+    const submission = new URLSearchParams();
     const target = directories.filter((directory) => directory.isSelected)[0];
+    const targetFiles = target.pdfDtos
+      .filter((file) => file.isSelected)
+      .map((file) => file.pdf_id);
+    targetFiles.forEach((id) => submission.append("pdfIds", id));
+
     if (target) {
-      try {
-        const res = await deletefoldernameAPI.delete(
-          JSON.stringify(target.folder_id)
-        );
-        if (res.status === 200) {
-          fetchData();
+      // 파일 삭제
+      if (targetFiles.length) {
+        try {
+          const res = await deletepdfAPI.delete(
+            `delete?${submission.toString()}&`
+          );
+          if (res.status === 200) {
+            fetchData();
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
-    } else {
-      console.log("디렉토리를 누르고 삭제해주세요");
+
+      // 폴더 삭제
+      else {
+        try {
+          const res = await deletefoldernameAPI.delete(
+            JSON.stringify(target.folder_id)
+          );
+          if (res.status === 200) {
+            fetchData();
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   };
 
@@ -178,6 +200,7 @@ const Upload = () => {
 
   // 파일 선택
   const handleFileChange = (e) => {
+    e.stopPropagation();
     const selectedFile = e.target.files[0];
     if (selectedFile && fileType.includes(selectedFile.type)) {
       setFileObj(selectedFile);
@@ -195,7 +218,7 @@ const Upload = () => {
       try {
         const res = await uploadpdfAPI.post("", formData);
         if (res.status === 200) {
-          navigate("/pdf");
+          // navigate("/pdf");
         }
       } catch (e) {
         console.log(e);
@@ -252,7 +275,6 @@ const Upload = () => {
     setDirectories(newDirectories);
   };
 
-  const handleFileDelete = (dirId, fileId) => {};
   return (
     <S.UploadWrapper>
       <S.SideBarWrapper>
@@ -262,7 +284,7 @@ const Upload = () => {
               <S.CompleteBtn onClick={() => setIsEditMode(false)}>
                 완료
               </S.CompleteBtn>
-              <S.DeleteBtn onClick={handleDirectoryDelete}>
+              <S.DeleteBtn onClick={handleDelete}>
                 <img src={trash} alt="삭제 버튼" />
               </S.DeleteBtn>
             </>

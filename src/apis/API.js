@@ -81,7 +81,7 @@ export const uploadpdfAPI = axios.create({
 // PDF 삭제
 export const deletepdfAPI = axios.create({
   method: "delete",
-  baseURL: `${BASE_URL}/api/pdf/delete`,
+  baseURL: `${BASE_URL}/api/pdf`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
