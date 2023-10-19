@@ -84,7 +84,7 @@ export const MainWrapper = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-left: 234px;
+  margin-left: 234px;
 `;
 export const EditBtn = styled.button`
   color: #555;
@@ -264,4 +264,15 @@ export const Footer = styled.div`
 export const UploadBtn = styled.button`
   position: fixed;
   right: 64px;
+  display: flex;
+  width: 240px;
+  height: 48px;
+  padding: 0px 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 44px;
+  background: var(--Gray_1, #e1e1e1);
+  color: #acacac;
+  font-family: "Noto Sans KR_Bold";
+  font-size: 16px;
 `;

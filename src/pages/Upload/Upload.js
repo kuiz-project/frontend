@@ -175,10 +175,10 @@ const Upload = () => {
   };
 
   // 파일 선택
-  const handleChange = (e) => {
+  const handleFileChange = (e) => {
     const formData = new FormData();
 
-    const targetDirectory = Number(directories.filter((dir) => dir.isSelected));
+    const targetDirectory = directories.filter((dir) => dir.isSelected);
     const targetSubject = subjects.filter((subject) => subject.isSelected);
     if (!targetDirectory || !targetSubject) {
       console.log("디렉토리와 강의명 모두 선택해야합니다.");
@@ -366,7 +366,7 @@ const Upload = () => {
               <input
                 type="file"
                 className="hiddenInput"
-                onChange={handleChange}
+                onChange={handleFileChange}
                 ref={fileInputRef}
               />
               <label
@@ -386,12 +386,10 @@ const Upload = () => {
             </S.UploadBox>
           </S.FileUploadWrapper>
         </S.LectureUploadWrapper>
-        <S.Footer>
-          <S.UploadBtn>
-            <img src={pdfuploadN} alt="pdf 업로드 전 버튼" />
-          </S.UploadBtn>
-        </S.Footer>
       </S.MainWrapper>
+      <S.Footer>
+        <S.UploadBtn>Pdf 생성</S.UploadBtn>
+      </S.Footer>
     </S.UploadWrapper>
   );
 };
