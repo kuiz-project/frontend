@@ -271,8 +271,8 @@ export const UploadBtn = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 44px;
-  background: var(--Gray_1, #e1e1e1);
-  color: #acacac;
+  background: ${({ pdfIsSelected }) => (pdfIsSelected ? "#312E81" : "#e1e1e1")};
+  color: ${({ pdfIsSelected }) => (pdfIsSelected ? "#fff" : "#acacac")};
   font-family: "Noto Sans KR_Bold";
   font-size: 16px;
 `;

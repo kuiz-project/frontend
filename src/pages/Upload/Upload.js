@@ -21,6 +21,7 @@ import {
 
 const Upload = () => {
   const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
+  const [fileObj, setFileObj] = useState(null);
   const [directories, setDirectories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const Upload = () => {
   const [fileEditText, setFileEditText] = useState(false);
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState("");
+  const [pdfIsSelected, setPdfIsSelected] = useState(false);
+  const [formData, setFormData] = useState("");
 
   const fetchInitialData = async () => {
     const res = await myfolderAPI.get();
@@ -122,7 +125,6 @@ const Upload = () => {
 
   // 더블클릭하여 directory 수정 모드
   const handleDirectoryDoubleClick = (e, dir) => {
-    console.log(dir);
     if (isEditMode) {
       const newDirectories = directories.map((directory) => {
         if (directory.folder_id === dir.folder_id) {
@@ -176,45 +178,55 @@ const Upload = () => {
 
   // 파일 선택
   const handleFileChange = (e) => {
-    const formData = new FormData();
+    const selectedFile = e.target.files[0];
+    if (selectedFile && fileType.includes(selectedFile.type)) {
+      setFileObj(selectedFile);
+      setSelectedFileName(selectedFile.name);
+      let reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onload = async (e) => {
+        setCurrentFile(e.target.result);
+      };
+    }
+  };
 
+  const handleUpload = async () => {
+    if (pdfIsSelected) {
+      try {
+        const res = await uploadpdfAPI.post("", formData);
+        if (res.status === 200) {
+          navigate("/pdf");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleValidateUpload = () => {
+    const formData = new FormData();
     const targetDirectory = directories.filter((dir) => dir.isSelected);
     const targetSubject = subjects.filter((subject) => subject.isSelected);
-    if (!targetDirectory || !targetSubject) {
-      console.log("디렉토리와 강의명 모두 선택해야합니다.");
+    if (!targetDirectory.length || !targetSubject.length) {
       return;
     }
     const targetDirectoryId = targetDirectory[0].folder_id;
     const targetSubjectName = targetSubject[0].subjectName;
-
-    formData.append("file", e.target.files[0]);
-    formData.append("subject", targetSubjectName);
-    formData.append("folder", targetDirectoryId);
-
-    setSelectedFileName(e.target.files[0].name);
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && fileType.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onload = async (e) => {
-          setCurrentFile(e.target.result);
-          try {
-            const res = await uploadpdfAPI.post("", formData);
-            if (res.status === 200) {
-              // navigate("/pdf");
-            }
-          } catch (e) {
-            console.log(e);
-          }
-        };
-      } else {
-        setCurrentFile(null);
-      }
-    } else {
-      console.log("please select");
+    if (targetDirectoryId && targetSubjectName && currentFile) {
+      formData.append("subject", targetSubjectName);
+      formData.append("folder", targetDirectoryId);
+      formData.append("file", fileObj);
+      setFormData(formData);
+      setPdfIsSelected(true);
+      return true;
     }
   };
+  // 업로드 가능 판단
+  useEffect(() => {
+    if (handleValidateUpload()) {
+      setPdfIsSelected(true);
+    }
+  }, [directories, subjects, currentFile]);
 
   // 파일명 수정
   const EditFileName = (pdfId) => {};
@@ -388,7 +400,9 @@ const Upload = () => {
         </S.LectureUploadWrapper>
       </S.MainWrapper>
       <S.Footer>
-        <S.UploadBtn>Pdf 생성</S.UploadBtn>
+        <S.UploadBtn pdfIsSelected={pdfIsSelected} onClick={handleUpload}>
+          Pdf 생성
+        </S.UploadBtn>
       </S.Footer>
     </S.UploadWrapper>
   );
