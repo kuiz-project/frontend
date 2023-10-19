@@ -242,6 +242,10 @@ export const FileItemWrapper = styled.button`
 export const FileName = styled.span`
   color: #424242;
   font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
 `;
 
 export const FileEditBtn = styled.button`
