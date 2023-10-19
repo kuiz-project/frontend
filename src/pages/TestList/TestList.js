@@ -6,7 +6,7 @@ const TestList = () => {
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
-  const testId = 2;
+  const testId = 1;
   useEffect(() => {
     const fetchApiData = async () => {
       try {
@@ -15,8 +15,15 @@ const TestList = () => {
 
         const formattedQuestions = apiData.questions
           .map((q) => {
+            console.log("Correct:", q.correct, "Explanation:", q.explanation);
+
+            const baseQuestion = {
+              correct: q.correct,
+              explanation: q.explanation,
+            };
             if (q.type === "multiple_choices") {
               return {
+                ...baseQuestion,
                 type: "multipleChoice",
                 main: q.question,
                 choices: q.choices || [],
@@ -24,6 +31,7 @@ const TestList = () => {
               };
             } else {
               return {
+                ...baseQuestion,
                 type: "subjective",
                 main: q.question,
                 choices: q.choices || [],
@@ -80,12 +88,14 @@ const TestList = () => {
       <S.TestWrapper>
         <S.TestList>
           {questions.map((question, index) => {
+            const isAnswered = typeof answers[index] !== "undefined";
             const isCorrect =
-              question.type === "multipleChoice"
+              isAnswered &&
+              (question.type === "multipleChoice"
                 ? answers[index] === question.answerIndex
-                : answers[index] === question.answerText;
+                : answers[index] === question.answerText);
             const titleStyle =
-              submitted && !isCorrect
+              submitted && !question.correct
                 ? { backgroundColor: "#FDA5A5" }
                 : { backgroundColor: "#E7ECF8" };
 
@@ -122,8 +132,10 @@ const TestList = () => {
                       );
                     })}
                   </S.TestProblem>
-                  {submitted && !isCorrect && (
-                    <S.IncorrectAnswerNotice>sdf</S.IncorrectAnswerNotice>
+                  {submitted && !question.correct && (
+                    <S.IncorrectAnswerNotice>
+                      {question.explanation}
+                    </S.IncorrectAnswerNotice>
                   )}
                 </S.TestMultipleChoice>
               );
@@ -143,9 +155,9 @@ const TestList = () => {
                       onBlur={(e) => handleSubjectiveBlur(index, e)}
                     />
                   </S.TestProblem_2>
-                  {submitted && !isCorrect && (
+                  {submitted && !question.correct && (
                     <S.IncorrectAnswerNotice>
-                      sdfhtdtdhgdhgfdhgfdggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+                      {question.explanation}
                     </S.IncorrectAnswerNotice>
                   )}
                 </S.TestSubjective>

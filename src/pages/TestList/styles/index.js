@@ -240,9 +240,9 @@ export const IncorrectAnswerNotice = styled.div`
   padding: 20px 20px 20px 20px;
   white-space: pre-wrap; // 줄바꿈과 공백을 보존합니다.
   overflow-wrap: break-word; // 긴 단어를 줄바꿈 합니다.
-  color: #2c0aff;
+  color: red;
   font-size: 16px;
   border-radius: 0px 0px 8px 8px;
-  background: var(--Text_White, #fff);
+  background: white;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 `;
