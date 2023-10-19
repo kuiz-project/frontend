@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
 import { testlistAPI } from "./../../apis/API";
+import { useLocation } from "react-router-dom";
 const TestList = () => {
+  const location = useLocation();
+  const testId = location.state?.testId;
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
-  const testId = 1;
   useEffect(() => {
     const fetchApiData = async () => {
       try {

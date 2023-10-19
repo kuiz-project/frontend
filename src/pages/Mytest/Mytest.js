@@ -5,12 +5,15 @@ import resultbutton from "../../assets/images/resultbutton.svg";
 import nresultbutton from "../../assets/images/button_nactive.svg";
 import * as S from "./styles/index";
 import { testAPI } from "../../apis/API";
+import { useNavigate } from "react-router-dom";
 
 const Mytest = () => {
   const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
   const [selectedPage, setSelectedPage] = useState(0);
   const [tests, setTests] = useState([]);
   const itemsPerPage = 10;
+  const [selectedTestId, setSelectedTestId] = useState(null); // 추가된 상태
   // 클릭 이벤트 핸들러
   useEffect(() => {
     // API 호출하여 데이터 가져오기
@@ -22,11 +25,13 @@ const Mytest = () => {
         console.error("API 호출 중 오류 발생:", error);
       });
   }, []);
-  const handleDivClick = (index) => {
+  const handleDivClick = (index, testId) => {
     if (selected === index) {
       setSelected(null); // 이미 선택된 div를 다시 클릭하면 선택을 해제
+      setSelectedTestId(null);
     } else {
       setSelected(index); // 새로운 div를 클릭하면 그 div를 선택
+      setSelectedTestId(testId);
     }
   };
   const currentTests = tests.slice(
@@ -63,7 +68,7 @@ const Mytest = () => {
                   ? { border: "none" }
                   : {}
               }
-              onClick={() => handleDivClick(index)}
+              onClick={() => handleDivClick(index, test.test_id)}
             >
               <div className="b1">{test.folder_name}</div>
               <div className="b2">{test.subject}</div>
@@ -128,7 +133,8 @@ const Mytest = () => {
             alt="Result Button"
             className="resbutton"
             onClick={() => {
-              alert(`${selected + 1}번째 PDF를 클릭했음`);
+              console.log(selectedTestId); //이따가 여기 api로 연결하기
+              navigate("/testlist", { state: { testId: selectedTestId } }); // <- 이 부분 추가: /testlist 경로로 이동
             }}
           />
         ) : (
