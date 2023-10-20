@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
 import { testlistAPI } from "./../../apis/API";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 const TestList = () => {
   const location = useLocation();
-  const testId = location.state?.testId;
+  const { testId } = useParams();
   const submittedFromProps = location.state?.submitted;
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
@@ -56,6 +56,7 @@ const TestList = () => {
       const fetchApiData = async () => {
         try {
           const response = await testlistAPI.get(`/gettest/${testId}`);
+          console.log(response);
           const apiData = response.data;
 
           const formattedQuestions = apiData.questions

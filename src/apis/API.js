@@ -116,7 +116,7 @@ export const testAPI = axios.create({
 });
 //Test 정답 빼고 받기
 export const testlistAPI = axios.create({
-  baseURL: `${BASE_URL}/api/test`,
+  baseURL: `${BASE_URL}/api/test/gettest`,
   withCredentials: true,
 });
 

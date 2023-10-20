@@ -26,7 +26,7 @@ const Upload = () => {
   const [directories, setDirectories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
-  const fileType = ["application/pdf"];
+  const fileType = ["application/pdf", "application/hanssoftpdf"];
   const [subjects, setSubjects] = useState([]);
   /* 디렉토리 수정 텍스트 */
   const fileInputRef = useRef(null);
@@ -191,6 +191,7 @@ const Upload = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
 
+    console.log(selectedFile.type);
     if (selectedFile && fileType.includes(selectedFile.type)) {
       setFileObj(selectedFile);
       setSelectedFileName(selectedFile.name);

@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { testAPI } from "../../apis/API";
+import { testAPI, testlistAPI } from "../../apis/API";
 const Pdf = () => {
   const { pdfId } = useParams();
 
@@ -43,10 +43,12 @@ const Pdf = () => {
         multiple_choices: multipleChoiceNumber,
         N_multiple_choices: subjectiveNumber,
       };
+
       try {
         const res = await testAPI.post("", submission);
         if (res.status === 200) {
-          navigate(`testlist/${res.data.test_id}`);
+          const res2 = await testlistAPI.get(Number(res.data.test_id));
+          console.log(res2);
         }
       } catch (e) {
         console.log(e);
