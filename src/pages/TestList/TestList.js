@@ -6,74 +6,109 @@ const TestList = () => {
   const location = useLocation();
   const testId = location.state?.testId;
   const submittedFromProps = location.state?.submitted;
-
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
   useEffect(() => {
-    const fetchApiData = async () => {
-      try {
-        const response = await testlistAPI.get(`/gettest/${testId}`);
-        const apiData = response.data;
+    if (submittedFromProps) {
+      // submittedFromProps 값이 true인 경우
+      const fetchAnswersAndQuestions = async () => {
+        try {
+          const response = await testlistAPI.get(`/getanswer/${testId}`);
+          if (response.data && response.data.questions) {
+            const updatedQuestions = response.data.questions
+              .map((q) => {
+                if (q.type === "multiple_choices") {
+                  return {
+                    type: "multipleChoice",
+                    main: q.question,
+                    choices: q.choices || [],
+                    answerIndex: q.answer,
+                    correct: q.correct,
+                    explanation: q.explanation,
+                  };
+                } else {
+                  return {
+                    type: "subjective",
+                    main: q.question,
+                    choices: q.choices || [],
+                    answerText: q.answer,
+                    correct: q.correct,
+                    explanation: q.explanation,
+                  };
+                }
+                return null;
+              })
+              .filter(Boolean);
 
-        const formattedQuestions = apiData.questions
-          .map((q) => {
-            // const baseQuestion = {
-            //   correct: q.correct,
-            //   explanation: q.explanation,
-            // };
-            if (q.type === "multiple_choices") {
-              return {
-                //...baseQuestion,
-                type: "multipleChoice",
-                main: q.question,
-                choices: q.choices || [],
-                answerIndex: q.answer,
-              };
-            } else {
-              return {
-                //...baseQuestion,
-                type: "subjective",
-                main: q.question,
-                choices: q.choices || [],
-                answerText: q.answer,
-              };
-            }
-            // 다른 문제 유형도 추가할 수 있습니다.
-            return null;
-          })
-          .filter(Boolean);
+            setQuestions(updatedQuestions);
+            setSubmitted(true);
+          }
+        } catch (error) {
+          console.error("Error fetching the answer results:", error);
+        }
+      };
 
-        setQuestions(formattedQuestions);
-      } catch (error) {
-        console.error("Error fetching the test data:", error);
-      }
-    };
+      fetchAnswersAndQuestions();
+    } else {
+      // submittedFromProps 값이 false인 경우
+      const fetchApiData = async () => {
+        try {
+          const response = await testlistAPI.get(`/gettest/${testId}`);
+          const apiData = response.data;
 
-    fetchApiData();
-  }, []);
+          const formattedQuestions = apiData.questions
+            .map((q) => {
+              if (q.type === "multiple_choices") {
+                return {
+                  type: "multipleChoice",
+                  main: q.question,
+                  choices: q.choices || [],
+                  answerIndex: q.answer,
+                };
+              } else {
+                return {
+                  type: "subjective",
+                  main: q.question,
+                  choices: q.choices || [],
+                  answerText: q.answer,
+                };
+              }
+              return null;
+            })
+            .filter(Boolean);
+
+          setQuestions(formattedQuestions);
+        } catch (error) {
+          console.error("Error fetching the test data:", error);
+        }
+      };
+
+      fetchApiData();
+    }
+  }, [submittedFromProps]);
 
   // 사용자가 제출했는지 여부를 확인하는 상태
   const handleSubmitAnswers = async () => {
     try {
-      // 1. 사용자 답안과 문제 정보를 조합하여 API에 보낼 데이터 형식으로 변환합니다.
-      const apiRequestBody = {
-        testId: testId,
-        questions: questions.map((question, index) => ({
-          ...question,
-          user_answer:
-            question.type === "multipleChoice"
-              ? String.fromCharCode(65 + answers[index])
-              : answers[index],
-        })),
-      };
+      // // 1. 사용자 답안과 문제 정보를 조합하여 API에 보낼 데이터 형식으로 변환합니다.
+      // const apiRequestBody = {
+      //   testId: testId,
+      //   questions: questions.map((question, index) => ({
+      //     ...question,
+      //     user_answer:
+      //       question.type === "multipleChoice"
+      //         ? String.fromCharCode(65 + answers[index])
+      //         : answers[index],
+      //   })),
+      // };
 
-      // 2. POST 요청을 보냅니다.
-      await testlistAPI.post(
-        "https://3.39.190.225:8443/api/test/scoretest",
-        apiRequestBody
-      );
+      // // 2. POST 요청을 보냅니다.
+      // await testlistAPI.post(
+      //   "https://3.39.190.225:8443/api/test/scoretest",
+      //   apiRequestBody
+      // );
       // 3. 2초 기다린 후 기존의 로직을 수행합니다.
       setTimeout(async () => {
         const response = await testlistAPI.get(`/getanswer/${testId}`);
