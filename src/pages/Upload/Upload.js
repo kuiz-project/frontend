@@ -15,7 +15,6 @@ import {
   deletepdfAPI,
   myfolderAPI,
   pdfsubjectAPI,
-  pdfurlAPI,
   updatefoldernameAPI,
   updatepdfAPI,
   uploadpdfAPI,

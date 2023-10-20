@@ -1,12 +1,5 @@
 import * as S from "./styles/index";
 import { Viewer, Worker } from "@react-pdf-viewer/core/lib";
-import {
-  defaultLayoutPlugin,
-  BookmarkIcon,
-  FileIcon,
-  ThumbnailIcon,
-  SidebarTab,
-} from "@react-pdf-viewer/default-layout";
 import { thumbnailPlugin } from "@react-pdf-viewer/thumbnail";
 import { currentFileState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";
