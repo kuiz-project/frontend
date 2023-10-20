@@ -72,10 +72,10 @@ const Mytest = () => {
             >
               <div className="b1">{test.folder_name}</div>
               <div className="b2">{test.subject}</div>
-              <div className="b3">{test.test_name}</div>
+              <div className="b3">{test.file_name}</div>
               <div className="b4">{test.page}</div>
               <div className="b5">{test.date}</div>
-              <div className="b6">3</div>
+              <div className="b6">{test.score}</div>
               {/* 점수 정보가 API 응답에 없기 때문에 임시 텍스트를 넣었습니다. */}
             </div>
           ))}
@@ -134,7 +134,9 @@ const Mytest = () => {
             className="resbutton"
             onClick={() => {
               console.log(selectedTestId); //이따가 여기 api로 연결하기
-              navigate("/testlist", { state: { testId: selectedTestId } }); // <- 이 부분 추가: /testlist 경로로 이동
+              navigate("/testlist", {
+                state: { testId: selectedTestId, submitted: true },
+              });
             }}
           />
         ) : (

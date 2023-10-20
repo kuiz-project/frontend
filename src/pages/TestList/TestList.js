@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 const TestList = () => {
   const location = useLocation();
   const testId = location.state?.testId;
+  const submittedFromProps = location.state?.submitted;
+
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
@@ -12,20 +14,18 @@ const TestList = () => {
   useEffect(() => {
     const fetchApiData = async () => {
       try {
-        const response = await testlistAPI.get(`/getanswer/${testId}`); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const response = await testlistAPI.get(`/gettest/${testId}`);
         const apiData = response.data;
 
         const formattedQuestions = apiData.questions
           .map((q) => {
-            console.log("Correct:", q.correct, "Explanation:", q.explanation);
-
-            const baseQuestion = {
-              correct: q.correct,
-              explanation: q.explanation,
-            };
+            // const baseQuestion = {
+            //   correct: q.correct,
+            //   explanation: q.explanation,
+            // };
             if (q.type === "multiple_choices") {
               return {
-                ...baseQuestion,
+                //...baseQuestion,
                 type: "multipleChoice",
                 main: q.question,
                 choices: q.choices || [],
@@ -33,7 +33,7 @@ const TestList = () => {
               };
             } else {
               return {
-                ...baseQuestion,
+                //...baseQuestion,
                 type: "subjective",
                 main: q.question,
                 choices: q.choices || [],
@@ -53,11 +53,50 @@ const TestList = () => {
 
     fetchApiData();
   }, []);
+
   // 사용자가 제출했는지 여부를 확인하는 상태
-  const handleSubmitAnswers = () => {
-    console.log("제출된 답안:", answers);
-    setSubmitted(true);
-    // 필요하다면 여기서 answers를 서버로 전송하거나 다른 처리를 할 수 있습니다.
+  const handleSubmitAnswers = async () => {
+    try {
+      // 1. 사용자 답안과 문제 정보를 조합하여 API에 보낼 데이터 형식으로 변환합니다.
+      const apiRequestBody = {
+        testId: testId,
+        questions: questions.map((question, index) => ({
+          ...question,
+          user_answer:
+            question.type === "multipleChoice"
+              ? String.fromCharCode(65 + answers[index])
+              : answers[index],
+        })),
+      };
+
+      // 2. POST 요청을 보냅니다.
+      await testlistAPI.post(
+        "https://3.39.190.225:8443/api/test/scoretest",
+        apiRequestBody
+      );
+      // 3. 2초 기다린 후 기존의 로직을 수행합니다.
+      setTimeout(async () => {
+        const response = await testlistAPI.get(`/getanswer/${testId}`);
+        if (response.data && response.data.questions) {
+          const updatedQuestions = questions.map((question, index) => {
+            const matchingAnswer = response.data.questions[index];
+            if (matchingAnswer) {
+              return {
+                ...question,
+                correct: matchingAnswer.correct,
+                explanation: matchingAnswer.explanation,
+              };
+            }
+            return question;
+          });
+
+          setQuestions(updatedQuestions);
+          setSubmitted(true);
+        }
+      }, 2000); // 10초 = 10000ms
+    } catch (error) {
+      console.error("Error fetching the answer results:", error);
+    }
   };
   const allQuestionsAnswered = () => {
     return Object.keys(answers).length === questions.length;
@@ -171,7 +210,7 @@ const TestList = () => {
       </S.TestWrapper>
       <S.StickyFooter>
         <S.SubmitButton
-          disabled={!allQuestionsAnswered()}
+          disabled={!allQuestionsAnswered() || submitted}
           onClick={handleSubmitAnswers}
         >
           제출
