@@ -5,149 +5,40 @@ import resultbutton from "../../assets/images/resultbutton.svg";
 import nresultbutton from "../../assets/images/button_nactive.svg";
 import * as S from "./styles/index";
 import { testAPI } from "../../apis/API";
+import { useNavigate } from "react-router-dom";
 
 const Mytest = () => {
   const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
   const [selectedPage, setSelectedPage] = useState(0);
-
+  const [tests, setTests] = useState([]);
+  const itemsPerPage = 10;
+  const [selectedTestId, setSelectedTestId] = useState(null); // 추가된 상태
   // 클릭 이벤트 핸들러
-  const handleDivClick = (index) => {
+  useEffect(() => {
+    // API 호출하여 데이터 가져오기
+    testAPI()
+      .then((response) => {
+        setTests(response.data.tests); // API 응답에서 tests 데이터를 상태에 저장
+      })
+      .catch((error) => {
+        console.error("API 호출 중 오류 발생:", error);
+      });
+  }, []);
+  const handleDivClick = (index, testId) => {
     if (selected === index) {
       setSelected(null); // 이미 선택된 div를 다시 클릭하면 선택을 해제
+      setSelectedTestId(null);
     } else {
       setSelected(index); // 새로운 div를 클릭하면 그 div를 선택
+      setSelectedTestId(testId);
     }
   };
-  const testData = [
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    {
-      b1: "ㅁ낭러니ㅏㅇ리ㅏㄴㅇ러",
-      b2: "ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ",
-      b3: "ㄴㅇㄹㄴㅇㄹㅇㄹㄴ 이름_번호",
-      b4: "2",
-      b5: "2023.01.02",
-      b6: "13/20",
-    },
-    // ... (나머지 데이터)
-  ];
-  let displayData;
-  switch (selectedPage) {
-    case 0:
-      displayData = testData;
-      break;
-    case 1:
-      displayData = testData;
-      break;
-    case 2:
-      displayData = testData;
-      break;
-    default:
-      displayData = testData; // 기본값 설정
-      break;
-  }
+  const currentTests = tests.slice(
+    selectedPage * itemsPerPage,
+    (selectedPage + 1) * itemsPerPage
+  );
+  const maxPage = Math.ceil(tests.length / itemsPerPage) - 1;
   return (
     <S.MytestWrapper>
       <div className="left_header">
@@ -166,7 +57,7 @@ const Mytest = () => {
             <div className="h5">출제일</div>
             <div className="h6">점수</div>
           </div>
-          {displayData.map((data, index) => (
+          {currentTests.map((test, index) => (
             <div
               key={index}
               className="left_body_contents"
@@ -177,14 +68,14 @@ const Mytest = () => {
                   ? { border: "none" }
                   : {}
               }
-              onClick={() => handleDivClick(index)}
+              onClick={() => handleDivClick(index, test.test_id)}
             >
-              <div className="b1">asdf</div>
-              <div className="b2">2323</div>
-              <div className="b3">2352345</div>
-              <div className="b4">rwe</div>
-              <div className="b5">sdfdsf</div>
-              <div className="b6">3</div>{" "}
+              <div className="b1">{test.folder_name}</div>
+              <div className="b2">{test.subject}</div>
+              <div className="b3">{test.file_name}</div>
+              <div className="b4">{test.page}</div>
+              <div className="b5">{test.date}</div>
+              <div className="b6">{test.score}</div>
               {/* 점수 정보가 API 응답에 없기 때문에 임시 텍스트를 넣었습니다. */}
             </div>
           ))}
@@ -196,27 +87,29 @@ const Mytest = () => {
               onClick={() => {
                 if (selectedPage > 0) {
                   // 0보다 클 때만 감소
+                  setSelected(null);
                   setSelectedPage((prevPage) => prevPage - 1);
                 }
               }}
             />
             <div className="left_body_footer_lists">
-              {Array(3)
-                .fill(null)
-                .map((_, pageIndex) => (
-                  <div
-                    key={pageIndex}
-                    className="left_body_footer_list"
-                    style={
-                      selectedPage === pageIndex
-                        ? { backgroundColor: "#312E81", color: "white" }
-                        : {}
-                    }
-                    onClick={() => setSelectedPage(pageIndex)}
-                  >
-                    {pageIndex + 1}
-                  </div>
-                ))}
+              {Array.from({ length: maxPage + 1 }).map((_, pageIndex) => (
+                <div
+                  key={pageIndex}
+                  className="left_body_footer_list"
+                  style={
+                    selectedPage === pageIndex
+                      ? { backgroundColor: "#312E81", color: "white" }
+                      : {}
+                  }
+                  onClick={() => {
+                    setSelected(null); // 선택 초기화
+                    setSelectedPage(pageIndex);
+                  }}
+                >
+                  {pageIndex + 1}
+                </div>
+              ))}
             </div>
             <img
               src={right}
@@ -224,7 +117,8 @@ const Mytest = () => {
               className="button"
               onClick={() => {
                 // 최대 페이지 수 2 (0-based index)를 넘기지 않도록 조건 추가
-                if (selectedPage < 2) {
+                if (selectedPage < maxPage) {
+                  setSelected(null);
                   setSelectedPage((prevPage) => prevPage + 1);
                 }
               }}
@@ -239,7 +133,10 @@ const Mytest = () => {
             alt="Result Button"
             className="resbutton"
             onClick={() => {
-              alert(`${selected + 1}번째 PDF를 클릭했음`);
+              console.log(selectedTestId); //이따가 여기 api로 연결하기
+              navigate("/testlist", {
+                state: { testId: selectedTestId, submitted: true },
+              });
             }}
           />
         ) : (
