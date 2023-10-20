@@ -55,6 +55,7 @@ export const myfolderAPI = axios.create({
 
 // 폴더 이름 변경(수정)
 export const updatefoldernameAPI = axios.create({
+  method: "patch",
   baseURL: `${BASE_URL}/api/folder/update-name`,
   withCredentials: true,
 });

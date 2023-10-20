@@ -19,6 +19,7 @@ export const DirTitle = styled.div`
   border-radius: 5px;
   background: ${({ isSelected }) => (isSelected ? "#312e81" : "#EDEDED")};
   padding: 11px;
+  justify-content: space-between;
 `;
 
 export const DirName = styled.span`
@@ -29,8 +30,22 @@ export const DirName = styled.span`
 
 export const DirInput = styled.input`
   color: ${({ isSelected }) => (isSelected ? "#fff" : "#424242")};
+  background: #ededed;
   font-size: 14px;
+  width: 100%;
   font-family: "Noto Sans KR_Medium";
+`;
+
+export const DirLeft = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+export const DirEditBtn = styled.button`
+  width: 20px;
+  height: 10px;
+  span {
+    font-size: 10px;
+  }
 `;
 
 export const SideBarWrapper = styled.section`
@@ -39,6 +54,7 @@ export const SideBarWrapper = styled.section`
   z-index: 998;
   height: 100%;
   width: 234px;
+  padding: 10px;
   background-color: white;
   overflow: scroll;
   // webkit 렌더링 엔진에서 스크롤 바 숨기기
@@ -250,7 +266,7 @@ export const FileName = styled.span`
 
 export const FileEditBtn = styled.button`
   span {
-    font-size: 3px;
+    font-size: 9px;
   }
 `;
 
