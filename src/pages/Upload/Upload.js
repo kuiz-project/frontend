@@ -58,7 +58,7 @@ const Upload = () => {
       console.log(e);
     }
   };
-
+  console.log(directories);
   // 폴더 받아오기
   const fetchData = async () => {
     const res = await myfolderAPI.get();
