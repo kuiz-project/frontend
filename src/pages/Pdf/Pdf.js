@@ -6,10 +6,12 @@ import { thumbnailPlugin } from "@react-pdf-viewer/thumbnail";
 import { currentFileState } from "../../recoil/atom";
 import { useRecoilState } from "recoil";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { testAPI } from "../../apis/API";
 const Pdf = () => {
+  const { pdfId } = useParams();
+
   const [multipleChoiceNumber, setMultipleChoiceNumber] = useState(0);
   const [subjectiveNumber, setSubjectiveNumber] = useState(0);
   const navigate = useNavigate();
@@ -36,14 +38,16 @@ const Pdf = () => {
   const handleUpload = async (e) => {
     if (isSelected) {
       const submission = {
-        pdf_id: 9,
+        pdf_id: Number(pdfId),
         page: curPage,
         multiple_choices: multipleChoiceNumber,
         N_multiple_choices: subjectiveNumber,
       };
       try {
         const res = await testAPI.post("", submission);
-        console.log(res);
+        if (res.status === 200) {
+          navigate(`testlist/${res.data.test_id}`);
+        }
       } catch (e) {
         console.log(e);
       }

@@ -58,7 +58,6 @@ const Upload = () => {
       console.log(e);
     }
   };
-  console.log(directories);
   // 폴더 받아오기
   const fetchData = async () => {
     const res = await myfolderAPI.get();
@@ -208,7 +207,7 @@ const Upload = () => {
       try {
         const res = await uploadpdfAPI.post("", formData);
         if (res.status === 200) {
-          navigate("/pdf");
+          navigate(`/pdf/${res.data.pdf_id}`);
         }
       } catch (e) {
         console.log(e);
