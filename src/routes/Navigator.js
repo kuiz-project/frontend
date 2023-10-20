@@ -22,9 +22,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/login/*" element={<Login />} />
       <Route path="/signup/*" element={<Signup />} />
-      <Route path="/test/*" element={<Test />} />
-      <Route path="/testlist" element={<TestList />} />
-      <Route path="/pdf/*" element={<Pdf />} />
+      <Route path="/testlist/:testId" element={<TestList />} />
+      <Route path="/pdf/:pdfId" element={<Pdf />} />
       <Route path="/mytest/*" element={<Mytest />} />
       <Route path="/upload/*" element={<Upload />} />
       <Route path="*" element={<div>없는페이지</div>} />
