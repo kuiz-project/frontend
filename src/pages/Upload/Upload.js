@@ -413,7 +413,7 @@ const Upload = () => {
           </S.SelectWrapper>
           <S.SelectWrapper>
             <S.SelectTitle>강의명</S.SelectTitle>
-            <S.List>
+            <S.List2>
               {subjects.map((subject) => (
                 <S.SelectItem
                   isSelected={subject.isSelected}
@@ -422,7 +422,7 @@ const Upload = () => {
                   {subject.subjectName}
                 </S.SelectItem>
               ))}
-            </S.List>
+            </S.List2>
           </S.SelectWrapper>
           <S.FileUploadWrapper>
             <S.UploadBox>

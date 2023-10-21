@@ -92,7 +92,8 @@ export const TestProblem_2 = styled.div`
 export const TestProblem1 = styled.div`
   height: 26px;
   border-radius: 16px;
-  margin-left: 64px;
+  margin-left: 50px;
+  margin-right: 50px;
   leading-trim: both;
   text-edge: cap;
   font-family: Noto Sans KR;
@@ -113,7 +114,8 @@ export const TestProblem1 = styled.div`
 export const TestProblem2 = styled.div`
   height: 26px;
   border-radius: 16px;
-  margin-left: 64px;
+  margin-left: 50px;
+  margin-right: 50px;
   color: #a3a3a3;
   leading-trim: both;
   text-edge: cap;
@@ -135,7 +137,8 @@ export const TestProblem2 = styled.div`
 export const TestProblem3 = styled.div`
   height: 26px;
   border-radius: 16px;
-  margin-left: 64px;
+  margin-left: 50px;
+  margin-right: 50px;
   color: #a3a3a3;
   leading-trim: both;
   text-edge: cap;
@@ -157,7 +160,8 @@ export const TestProblem3 = styled.div`
 export const TestProblem4 = styled.div`
   height: 26px;
   border-radius: 16px;
-  margin-left: 64px;
+  margin-left: 50px;
+  margin-right: 50px;
   color: #a3a3a3;
   leading-trim: both;
   text-edge: cap;

@@ -54,7 +54,6 @@ export const SideBarWrapper = styled.section`
   z-index: 998;
   height: 100%;
   width: 234px;
-  padding: 10px;
   background-color: white;
   overflow: scroll;
   // webkit 렌더링 엔진에서 스크롤 바 숨기기
@@ -69,7 +68,7 @@ export const SideBarHeader = styled.section`
   gap: 15px;
   border: 1px solid #ededed;
   background: var(--Text_White, #fff);
-  width: 238px;
+  width: 234px;
   justify-content: flex-end;
   align-items: center;
   padding: 13px;
@@ -175,7 +174,14 @@ export const List = styled.span`
   gap: 8px;
   width: 400px;
 `;
-
+//강의명 임시로 괜찮게 보이도록 마진 설정함
+export const List2 = styled.span`
+  margin-top: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 400px;
+`;
 export const SelectItem = styled.button`
   height: 45px;
   padding: 16px 24px;
@@ -280,6 +286,7 @@ export const Footer = styled.div`
   position: fixed;
   bottom: 0;
   z-index: 10000;
+  background-color: white;
 `;
 export const UploadBtn = styled.button`
   position: fixed;
