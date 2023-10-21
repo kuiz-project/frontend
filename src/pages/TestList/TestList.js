@@ -1,52 +1,49 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
-import { testnoansnwerAPI } from "./../../apis/API";
+import { testanswerAPI, testnoansnwerAPI } from "./../../apis/API";
 import { useParams } from "react-router-dom";
 const TestList = () => {
-  const location = useLocation();
   const { testId } = useParams();
-  const submittedFromProps = location.state?.submitted;
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
-  
+
   useEffect(() => {
     const fetchApiData = async () => {
       try {
-        const response = await testlistAPI.get(`/getanswer/${testId}`); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const response = await testnoansnwerAPI.get(testId); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
         const apiData = response.data;
 
-          const formattedQuestions = apiData.questions
-            .map((q) => {
-              if (q.type === "multiple_choices") {
-                return {
-                  type: "multipleChoice",
-                  main: q.question,
-                  choices: q.choices || [],
-                  answerIndex: q.answer,
-                };
-              } else {
-                return {
-                  type: "subjective",
-                  main: q.question,
-                  choices: q.choices || [],
-                  answerText: q.answer,
-                };
-              }
-              return null;
-            })
-            .filter(Boolean);
+        const formattedQuestions = apiData.questions
+          .map((q) => {
+            if (q.type === "multiple_choices") {
+              return {
+                type: "multipleChoice",
+                main: q.question,
+                choices: q.choices || [],
+                answerIndex: q.answer,
+              };
+            } else {
+              return {
+                type: "subjective",
+                main: q.question,
+                choices: q.choices || [],
+                answerText: q.answer,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean);
 
-          setQuestions(formattedQuestions);
-        } catch (error) {
-          console.error("Error fetching the test data:", error);
-        }
-      };
+        setQuestions(formattedQuestions);
+      } catch (error) {
+        console.error("Error fetching the test data:", error);
+      }
+    };
 
-      fetchApiData();
-    }
-  }, [submittedFromProps]);
+    fetchApiData();
+  }, []);
 
   // 사용자가 제출했는지 여부를 확인하는 상태
   const handleSubmitAnswers = async () => {
@@ -70,7 +67,7 @@ const TestList = () => {
       // );
       // 3. 2초 기다린 후 기존의 로직을 수행합니다.
       setTimeout(async () => {
-        const response = await testlistAPI.get(`/getanswer/${testId}`);
+        const response = await testanswerAPI.get(testId);
         if (response.data && response.data.questions) {
           const updatedQuestions = questions.map((question, index) => {
             const matchingAnswer = response.data.questions[index];
