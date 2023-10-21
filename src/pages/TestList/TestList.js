@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
-import { testlistAPI } from "./../../apis/API";
-import { useLocation, useParams } from "react-router-dom";
+import { testnoansnwerAPI } from "./../../apis/API";
+import { useParams } from "react-router-dom";
 const TestList = () => {
   const location = useLocation();
   const { testId } = useParams();
@@ -10,54 +10,12 @@ const TestList = () => {
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
+  
   useEffect(() => {
-    if (submittedFromProps) {
-      // submittedFromProps 값이 true인 경우
-      const fetchAnswersAndQuestions = async () => {
-        try {
-          const response = await testlistAPI.get(`/getanswer/${testId}`);
-          if (response.data && response.data.questions) {
-            const updatedQuestions = response.data.questions
-              .map((q) => {
-                if (q.type === "multiple_choices") {
-                  return {
-                    type: "multipleChoice",
-                    main: q.question,
-                    choices: q.choices || [],
-                    answerIndex: q.answer,
-                    correct: q.correct,
-                    explanation: q.explanation,
-                  };
-                } else {
-                  return {
-                    type: "subjective",
-                    main: q.question,
-                    choices: q.choices || [],
-                    answerText: q.answer,
-                    correct: q.correct,
-                    explanation: q.explanation,
-                  };
-                }
-                return null;
-              })
-              .filter(Boolean);
-
-            setQuestions(updatedQuestions);
-            setSubmitted(true);
-          }
-        } catch (error) {
-          console.error("Error fetching the answer results:", error);
-        }
-      };
-
-      fetchAnswersAndQuestions();
-    } else {
-      // submittedFromProps 값이 false인 경우
-      const fetchApiData = async () => {
-        try {
-          const response = await testlistAPI.get(`/gettest/${testId}`);
-          console.log(response);
-          const apiData = response.data;
+    const fetchApiData = async () => {
+      try {
+        const response = await testlistAPI.get(`/getanswer/${testId}`); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const apiData = response.data;
 
           const formattedQuestions = apiData.questions
             .map((q) => {
@@ -232,9 +190,9 @@ const TestList = () => {
                       onBlur={(e) => handleSubjectiveBlur(index, e)}
                     />
                   </S.TestProblem_2>
-                  {submitted && !question.correct && (
+                  {submitted && !isCorrect && (
                     <S.IncorrectAnswerNotice>
-                      {question.explanation}
+                      sdfhtdtdhgdhgfdhgfdggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
                     </S.IncorrectAnswerNotice>
                   )}
                 </S.TestSubjective>

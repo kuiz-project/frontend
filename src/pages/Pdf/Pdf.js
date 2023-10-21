@@ -47,8 +47,7 @@ const Pdf = () => {
       try {
         const res = await testAPI.post("", submission);
         if (res.status === 200) {
-          const res2 = await testlistAPI.get(Number(res.data.test_id));
-          console.log(res2);
+          navigate(`testlist/${res.data.test_id}`);
         }
       } catch (e) {
         console.log(e);

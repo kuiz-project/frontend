@@ -90,7 +90,6 @@ export const TestProblem_2 = styled.div`
 `;
 
 export const TestProblem1 = styled.div`
-  width: 100px;
   height: 26px;
   border-radius: 16px;
   margin-left: 64px;
@@ -112,7 +111,6 @@ export const TestProblem1 = styled.div`
 `;
 
 export const TestProblem2 = styled.div`
-  width: 100px;
   height: 26px;
   border-radius: 16px;
   margin-left: 64px;
@@ -135,7 +133,6 @@ export const TestProblem2 = styled.div`
 `;
 
 export const TestProblem3 = styled.div`
-  width: 100px;
   height: 26px;
   border-radius: 16px;
   margin-left: 64px;
@@ -158,7 +155,6 @@ export const TestProblem3 = styled.div`
 `;
 
 export const TestProblem4 = styled.div`
-  width: 100px;
   height: 26px;
   border-radius: 16px;
   margin-left: 64px;
