@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import * as S from "./styles/index";
-import { IdCheckGetAPI } from "../../apis/API";
+import { IdCheckGetAPI, loginPostAPI } from "../../apis/API";
 import { userPostAPI } from "./../../apis/API";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -16,6 +16,7 @@ const Signup = () => {
   const [idDupState, isIdDupState] = useState(true);
   const [pwValidateState, isPwValidateState] = useState(true);
   const [pwdupValidateState, isPwdupValidateState] = useState(true);
+  const [isLoginState, setIsLoginState] = useRecoilState(LoginState);
 
   // 비밀번호 유효성 검사(숫자, 문자를 포함 8자리 이상)
   const passwordExp = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
@@ -29,7 +30,6 @@ const Signup = () => {
           isIdDupState(true);
         }
       } catch (err) {
-        console.log(err);
         if (
           err.response &&
           (err.response.status === 409 || err.response.status === 500)
@@ -60,10 +60,23 @@ const Signup = () => {
       try {
         const res = await userPostAPI.post("", submission);
         if (res.status === 201) {
-          navigate("/upload");
+          const submission = {
+            id: idValue,
+            password: pwValue,
+          };
+          try {
+            const res2 = await loginPostAPI.post("", submission);
+            if (res2.status === 200) {
+              console.log("로그인 성공");
+              setIsLoginState(true);
+              navigate("/upload");
+            }
+          } catch (e) {
+            console.log(e);
+          }
         }
-      } catch (err) {
-        console.log(err);
+      } catch (e) {
+        console.log(e);
       }
     }
   };
