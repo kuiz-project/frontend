@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
-import { testlistAPI } from "./../../apis/API";
+import { testnoansnwerAPI } from "./../../apis/API";
+import { useParams } from "react-router-dom";
 const TestList = () => {
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
   const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
-  const testId = 2;
+  const { testId } = useParams();
+  console.log(testId);
+
   useEffect(() => {
     const fetchApiData = async () => {
       try {
-        const response = await testlistAPI.get(`/getanswer/${testId}`); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const response = await testnoansnwerAPI.get(testId); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        console.log(response);
         const apiData = response.data;
 
         const formattedQuestions = apiData.questions
@@ -144,9 +148,7 @@ const TestList = () => {
                     />
                   </S.TestProblem_2>
                   {submitted && !isCorrect && (
-                    <S.IncorrectAnswerNotice>
-                      sdfhtdtdhgdhgfdhgfdggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
-                    </S.IncorrectAnswerNotice>
+                    <S.IncorrectAnswerNotice></S.IncorrectAnswerNotice>
                   )}
                 </S.TestSubjective>
               );

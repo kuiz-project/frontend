@@ -108,19 +108,41 @@ export const pdfurlAPI = axios.create({
   withCredentials: true,
 });
 
-//Test 목록 받기
+export const pdfsubjectAPI = axios.create({
+  baseURL: `${BASE_URL}/api/pdf/subjects`,
+  withCredentials: true,
+});
+
+/* TEST */
+
+// Test 생성
 export const testAPI = axios.create({
   methode: "post",
   baseURL: `${BASE_URL}/api/test/create`,
   withCredentials: true,
 });
-//Test 정답 빼고 받기
-export const testlistAPI = axios.create({
-  baseURL: `${BASE_URL}/api/test`,
+
+// Test 정답 빼고
+export const testnoansnwerAPI = axios.create({
+  baseURL: `${BASE_URL}/api/test/test/gettest`,
   withCredentials: true,
 });
 
-export const pdfsubjectAPI = axios.create({
-  baseURL: `${BASE_URL}/api/pdf/subjects`,
+// Test 정답 포함
+export const testanswerAPI = axios.create({
+  baseURL: `${BASE_URL}/api/test/test/getanswer`,
+  withCredentials: true,
+});
+
+// Test 목록 받기
+export const testlistAPI = axios.create({
+  baseURL: `${BASE_URL}/api/test/test`,
+  withCredentials: true,
+});
+
+// Test 채점
+export const testcheckAPI = axios.create({
+  methode: "post",
+  baseURL: `${BASE_URL}/api/test/scoretest`,
   withCredentials: true,
 });
