@@ -26,7 +26,7 @@ const Upload = () => {
   const [directories, setDirectories] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
-  const fileType = ["application/pdf", "application/hanssoftpdf"];
+  const fileType = ["application/pdf", "application/haansoftpdf"];
   const [subjects, setSubjects] = useState([]);
   /* 디렉토리 수정 텍스트 */
   const fileInputRef = useRef(null);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
 import { testanswerAPI, testnoansnwerAPI } from "./../../apis/API";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 const TestList = () => {
   const { testId } = useParams();
   const [submitted, setSubmitted] = useState(false);
@@ -12,7 +13,7 @@ const TestList = () => {
   useEffect(() => {
     const fetchApiData = async () => {
       try {
-        const response = await testnoansnwerAPI.get(testId); // test_id가 1로 주어져 있으므로 이와 같이 설정했습니다.
+        const response = await testnoansnwerAPI.get(testId);
         const apiData = response.data;
 
         const formattedQuestions = apiData.questions
@@ -48,24 +49,60 @@ const TestList = () => {
   // 사용자가 제출했는지 여부를 확인하는 상태
   const handleSubmitAnswers = async () => {
     try {
-      // // 1. 사용자 답안과 문제 정보를 조합하여 API에 보낼 데이터 형식으로 변환합니다.
-      // const apiRequestBody = {
-      //   testId: testId,
-      //   questions: questions.map((question, index) => ({
-      //     ...question,
-      //     user_answer:
-      //       question.type === "multipleChoice"
-      //         ? String.fromCharCode(65 + answers[index])
-      //         : answers[index],
-      //   })),
-      // };
+      const transformRequestData = (data) => {
+        return {
+          test_id: data.testId,
+          questions: data.questions.map((question) => {
+            let type;
+            if (question.type === "multipleChoice") {
+              type = "multiple_choices";
+            } else if (question.type === "subjective") {
+              type = "N_multiple_choices";
+            }
 
-      // // 2. POST 요청을 보냅니다.
-      // await testlistAPI.post(
-      //   "https://3.39.190.225:8443/api/test/scoretest",
-      //   apiRequestBody
-      // );
-      // 3. 2초 기다린 후 기존의 로직을 수행합니다.
+            let userAnswer = question.user_answer;
+            if (type === "multiple_choices") {
+              // A=0, B=1, C=2, D=3... 로 변환
+              userAnswer = question.choices[parseInt(userAnswer)];
+            }
+
+            return {
+              type: type,
+              question: question.main,
+              choices: question.choices,
+              user_answer: userAnswer,
+            };
+          }),
+        };
+      };
+      // 1. 사용자 답안과 문제 정보를 조합하여 API에 보낼 데이터 형식으로 변환합니다.
+      const apiRequestBody = {
+        testId: testId,
+        questions: questions.map((question, index) => {
+          let userAnswer;
+          if (question.type === "multipleChoice") {
+            userAnswer = answers[index];
+          } else if (question.type === "subjective") {
+            userAnswer = answers[index];
+          }
+
+          return {
+            ...question,
+            user_answer: userAnswer,
+          };
+        }),
+      };
+      const transformedRequest = transformRequestData(apiRequestBody);
+      console.log(
+        "Sending this JSON:",
+        JSON.stringify(transformedRequest, null, 2)
+      );
+      // 2. POST 요청을 보냅니다.
+      const response = await axios.post(
+        "https://3.39.190.225:8443/api/test/scoretest",
+        transformedRequest
+      );
+      console.log("Response Data:", response.data);
       setTimeout(async () => {
         const response = await testanswerAPI.get(testId);
         if (response.data && response.data.questions) {
@@ -187,9 +224,9 @@ const TestList = () => {
                       onBlur={(e) => handleSubjectiveBlur(index, e)}
                     />
                   </S.TestProblem_2>
-                  {submitted && !isCorrect && (
+                  {submitted && !question.correct && (
                     <S.IncorrectAnswerNotice>
-                      sdfhtdtdhgdhgfdhgfdggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+                      {question.explanation}
                     </S.IncorrectAnswerNotice>
                   )}
                 </S.TestSubjective>

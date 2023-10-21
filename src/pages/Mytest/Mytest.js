@@ -4,7 +4,7 @@ import right from "../../assets/images/right.svg";
 import resultbutton from "../../assets/images/resultbutton.svg";
 import nresultbutton from "../../assets/images/button_nactive.svg";
 import * as S from "./styles/index";
-import { testAPI } from "../../apis/API";
+import { testlistAPI } from "../../apis/API";
 import { useNavigate } from "react-router-dom";
 
 const Mytest = () => {
@@ -17,7 +17,7 @@ const Mytest = () => {
   // 클릭 이벤트 핸들러
   useEffect(() => {
     // API 호출하여 데이터 가져오기
-    testAPI()
+    testlistAPI()
       .then((response) => {
         setTests(response.data.tests); // API 응답에서 tests 데이터를 상태에 저장
       })
