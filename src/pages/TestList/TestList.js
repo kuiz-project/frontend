@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
 import { testanswerAPI, testnoansnwerAPI } from "./../../apis/API";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 const TestList = () => {
   const { testId } = useParams();
+  const location = useLocation();
   const [submitted, setSubmitted] = useState(false);
   const [selectedChoices, setSelectedChoices] = useState({});
   const [answers, setAnswers] = useState({});
@@ -100,7 +102,10 @@ const TestList = () => {
       // 2. POST 요청을 보냅니다.
       const response = await axios.post(
         "https://3.39.190.225:8443/api/test/scoretest",
-        transformedRequest
+        transformedRequest,
+        {
+          withCredentials: true,
+        }
       );
       console.log("Response Data:", response.data);
       setTimeout(async () => {

@@ -21,6 +21,7 @@ const Mytest = () => {
       .then((response) => {
         if (Array.isArray(response.data)) {
           // 응답이 배열인지 확인
+          console.log(response.data);
           setTests(response.data);
         } else {
           // 오류 처리 또는 기본값 설정
@@ -142,7 +143,9 @@ const Mytest = () => {
             onClick={() => {
               console.log(selectedTestId); //이따가 여기 api로 연결하기
               navigate(`/testlist/${selectedTestId}`, {
-                state: { testId: selectedTestId, submitted: true },
+                state: {
+                  submitted: true,
+                },
               });
             }}
           />
