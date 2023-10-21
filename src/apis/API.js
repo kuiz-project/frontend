@@ -136,7 +136,7 @@ export const testanswerAPI = axios.create({
 
 // Test 목록 받기
 export const testlistAPI = axios.create({
-  baseURL: `${BASE_URL}/api/test/test`,
+  baseURL: `${BASE_URL}/api/test/test/my-tests`,
   withCredentials: true,
 });
 

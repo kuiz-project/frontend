@@ -19,7 +19,14 @@ const Mytest = () => {
     // API 호출하여 데이터 가져오기
     testlistAPI()
       .then((response) => {
-        setTests(response.data.tests); // API 응답에서 tests 데이터를 상태에 저장
+        if (Array.isArray(response.data)) {
+          // 응답이 배열인지 확인
+          setTests(response.data);
+        } else {
+          // 오류 처리 또는 기본값 설정
+          console.error("Unexpected API response:", response.data);
+          setTests([]); // 이 부분은 선택사항입니다. 오류가 발생할 경우 빈 배열로 상태를 유지합니다.
+        }
       })
       .catch((error) => {
         console.error("API 호출 중 오류 발생:", error);
@@ -134,7 +141,7 @@ const Mytest = () => {
             className="resbutton"
             onClick={() => {
               console.log(selectedTestId); //이따가 여기 api로 연결하기
-              navigate("/testlist", {
+              navigate(`/testlist/${selectedTestId}`, {
                 state: { testId: selectedTestId, submitted: true },
               });
             }}

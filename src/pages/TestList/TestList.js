@@ -196,7 +196,7 @@ const TestList = () => {
                           isSelected={isSelected}
                           onClick={() => handleChoiceClick(index, idx)}
                         >
-                          {String.fromCharCode(65 + idx)}. {choice}
+                          {choice}
                         </ChoiceComponent>
                       );
                     })}
