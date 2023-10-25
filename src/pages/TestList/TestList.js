@@ -107,9 +107,9 @@ const TestList = () => {
           withCredentials: true,
         }
       );
-      console.log("Response Data:", response.data);
       setTimeout(async () => {
         const response = await testanswerAPI.get(testId);
+
         if (response.data && response.data.questions) {
           const updatedQuestions = questions.map((question, index) => {
             const matchingAnswer = response.data.questions[index];

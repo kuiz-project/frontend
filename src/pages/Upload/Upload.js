@@ -191,7 +191,6 @@ const Upload = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
 
-    console.log(selectedFile.type);
     if (selectedFile && fileType.includes(selectedFile.type)) {
       setFileObj(selectedFile);
       setSelectedFileName(selectedFile.name);
@@ -202,11 +201,11 @@ const Upload = () => {
       };
     }
   };
-
   const handleUpload = async () => {
     if (pdfIsSelected) {
       try {
         const res = await uploadpdfAPI.post("", formData);
+
         if (res.status === 200) {
           navigate(`/pdf/${res.data.pdf_id}`);
         }
