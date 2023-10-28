@@ -15,6 +15,7 @@ import {
   deletepdfAPI,
   myfolderAPI,
   pdfsubjectAPI,
+  pdfurlAPI,
   updatefoldernameAPI,
   updatepdfAPI,
   uploadpdfAPI,
@@ -215,6 +216,7 @@ const Upload = () => {
     }
   };
 
+  // 업로드 가능 판단
   const handleValidateUpload = () => {
     const formData = new FormData();
     const targetDirectory = directories.filter((dir) => dir.isSelected);
@@ -233,7 +235,6 @@ const Upload = () => {
       return true;
     }
   };
-  // 업로드 가능 판단
 
   useEffect(() => {
     if (handleValidateUpload()) {
@@ -270,13 +271,62 @@ const Upload = () => {
     }
   };
 
+  const convertBlobToFileObject = async (blob, filename) => {
+    return new File([blob], filename, {
+      type: blob.type,
+      lastModified: new Date().getTime(),
+      webkitRelativePath: "",
+    });
+  };
+
+  const fetchPdfFromS3 = async (url) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.blob();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getFileObjectFromS3Url = async (s3PdfUrl, filename, pdf_id) => {
+    try {
+      const pdfBlob = await fetchPdfFromS3(s3PdfUrl);
+      const fileObject = await convertBlobToFileObject(pdfBlob, filename);
+      if (fileObject && fileType.includes(fileObject.type)) {
+        setFileObj(fileObject);
+        setSelectedFileName(fileObject.name);
+        let reader = new FileReader();
+        reader.readAsDataURL(fileObject);
+        reader.onload = async (e) => {
+          setCurrentFile(e.target.result);
+          navigate(`/pdf/${pdf_id}`);
+        };
+      }
+    } catch (error) {
+      console.error("Error fetching PDF from S3:", error);
+    }
+  };
   // (파일 클릭) 업로드 할 때는 전체 디렉토리에서 하나만 클릭 가능
-  const handleFileClick = async (dirId, fileId) => {
+  const handleFileClick = async (dirId, pdf) => {
     const newDirectories = directories.map((dir) => {
       if (dir.pdfDtos) {
-        const newFiles = dir.pdfDtos.map((file) => {
+        const newFiles = dir.pdfDtos.map(async (file) => {
           // 편집 모드 일때만 다중 선택 가능 else
-          if (dir.folder_id === dirId && file.pdf_id === fileId) {
+          if (dir.folder_id === dirId && file.pdf_id === pdf.pdf_id) {
+            try {
+              const pdfurl = await pdfurlAPI.get(`${file.pdf_id}`);
+              if (pdfurl.status === 200) {
+                const fileObj = getFileObjectFromS3Url(
+                  pdfurl.data.presignedUrl,
+                  pdf.file_name,
+                  pdf.pdf_id
+                );
+              }
+            } catch (e) {
+              console.log(e);
+            }
             return { ...file, isSelected: !file.isSelected };
           } else {
             if (isEditMode) {
@@ -360,7 +410,7 @@ const Upload = () => {
                       key={pdf.pdf_id}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleFileClick(directory.folder_id, pdf.pdf_id);
+                        handleFileClick(directory.folder_id, pdf);
                       }}
                       isSelected={pdf.isSelected}
                     >
