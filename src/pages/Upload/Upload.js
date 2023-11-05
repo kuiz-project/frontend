@@ -5,6 +5,7 @@ import open from "../../assets/images/dir_open.svg";
 import add from "../../assets/images/add.svg";
 import trash from "../../assets/images/trash.svg";
 import edit from "../../assets/images/edit.svg";
+import spinner from "../../assets/images/spinner.gif";
 import * as S from "./styles/index";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -34,10 +35,12 @@ const Upload = () => {
 	const [selectedFileName, setSelectedFileName] = useState("");
 	const [pdfIsSelected, setPdfIsSelected] = useState(false);
 	const [formData, setFormData] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const fetchInitialData = async () => {
 		const res = await myfolderAPI.get();
 		const res2 = await pdfsubjectAPI.get();
+
 		try {
 			if (res.status === 200) {
 				const updatedDirectories = res.data.folderDtos.map((directory) => ({
@@ -206,12 +209,17 @@ const Upload = () => {
 	const handleUpload = async () => {
 		if (pdfIsSelected) {
 			try {
+				// 로딩
+				setIsLoading(true);
+				setPdfIsSelected(false);
 				const res = await uploadpdfAPI.post("", formData);
-
+				setIsLoading(false);
 				if (res.status === 200) {
 					navigate(`/pdf/${res.data.pdf_id}`);
 				}
 			} catch (e) {
+				setIsLoading(false);
+				setPdfIsSelected(true);
 				console.log(e);
 			}
 		}
@@ -501,8 +509,16 @@ const Upload = () => {
 				</S.LectureUploadWrapper>
 			</S.MainWrapper>
 			<S.Footer>
-				<S.UploadBtn pdfIsSelected={pdfIsSelected} onClick={handleUpload}>
-					Pdf 생성
+				<S.UploadBtn
+					pdfIsSelected={pdfIsSelected}
+					onClick={handleUpload}
+					isLoading={isLoading}
+				>
+					{isLoading ? (
+						<S.Spinner src={spinner} alt="로딩 애니메이션" />
+					) : (
+						"PDF 생성"
+					)}
 				</S.UploadBtn>
 			</S.Footer>
 		</S.UploadWrapper>

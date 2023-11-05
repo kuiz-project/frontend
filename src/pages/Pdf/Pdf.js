@@ -1,4 +1,5 @@
 import * as S from "./styles/index";
+import spinner from "../../assets/images/spinner.gif";
 import up from "../../assets/images/upbutton.svg";
 import down from "../../assets/images/downbutton.svg";
 import { Viewer, Worker } from "@react-pdf-viewer/core/lib";
@@ -25,7 +26,6 @@ const Pdf = () => {
 
 	const [viewpdf, setViewpdf] = useState(null);
 	const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
-	console.log(currentFile);
 	const [isSelected, setIsSelected] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -49,12 +49,15 @@ const Pdf = () => {
 			try {
 				// 로딩
 				setIsLoading(true);
+				setIsSelected(false);
 				const res = await testAPI.post("", submission);
 				setIsLoading(false);
 				if (res.status === 200) {
 					navigate(`/testlist/${res.data.test_id}`);
 				}
 			} catch (e) {
+				setIsLoading(false);
+				setIsSelected(true);
 				console.log(e);
 			}
 		}
@@ -149,8 +152,16 @@ const Pdf = () => {
 						</div>
 					</div>
 				</div>
-				<S.GenerateBtn isSelected={isSelected} onClick={handleUpload}>
-					업로드
+				<S.GenerateBtn
+					isSelected={isSelected}
+					onClick={handleUpload}
+					isLoading={isLoading}
+				>
+					{isLoading ? (
+						<S.Spinner src={spinner} alt="로딩 애니메이션" />
+					) : (
+						"업로드"
+					)}
 				</S.GenerateBtn>
 			</S.GenerateWrapper>
 		</S.PdfWrapper>

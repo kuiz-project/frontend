@@ -28,23 +28,27 @@ const Navbar = () => {
 	]);
 
 	const handleNavItem = (index) => {
-		const newNavItem = [...navItem].map((item, idx) => {
-			if (index === idx) {
-				return { ...item, isSelected: true };
-			} else {
-				return { ...item, isSelected: false };
+		if (isLoginState) {
+			const newNavItem = [...navItem].map((item, idx) => {
+				if (index === idx) {
+					return { ...item, isSelected: true };
+				} else {
+					return { ...item, isSelected: false };
+				}
+			});
+			setNavItem(newNavItem);
+			switch (index) {
+				case 0:
+					navigate("/upload");
+					break;
+				case 1:
+					navigate("/mytest");
+					break;
+				default:
+					break;
 			}
-		});
-		setNavItem(newNavItem);
-		switch (index) {
-			case 0:
-				navigate("/upload");
-				break;
-			case 1:
-				navigate("/mytest");
-				break;
-			default:
-				break;
+		} else {
+			console.log("로그인 필요");
 		}
 	};
 

@@ -303,6 +303,10 @@ export const UploadBtn = styled.button`
 	border-radius: 44px;
 	background: ${({ pdfIsSelected }) => (pdfIsSelected ? "#312E81" : "#e1e1e1")};
 	color: ${({ pdfIsSelected }) => (pdfIsSelected ? "#fff" : "#acacac")};
+	cursor: ${({ isLoading }) => (isLoading ? "progress" : "pointer")};
 	font-family: "Noto Sans KR_Bold";
 	font-size: 16px;
+`;
+export const Spinner = styled.img`
+	width: 75px;
 `;
