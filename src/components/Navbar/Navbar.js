@@ -19,7 +19,7 @@ const Navbar = () => {
 	const [navItem, setNavItem] = useState([
 		{
 			name: "문제 생성",
-			isSelected: true,
+			isSelected: false,
 		},
 		{
 			name: "나의 시험지",
@@ -43,11 +43,8 @@ const Navbar = () => {
 			case 1:
 				navigate("/mytest");
 				break;
-			case 2:
-				navigate("/upload");
-				break;
 			default:
-				return;
+				break;
 		}
 	};
 
@@ -56,6 +53,10 @@ const Navbar = () => {
 			<section className="navBarLeftBox">
 				<button
 					onClick={() => {
+						const newNavItem = [...navItem].map((item, idx) => {
+							return { ...item, isSelected: false };
+						});
+						setNavItem(newNavItem);
 						navigate("/");
 					}}
 				>
