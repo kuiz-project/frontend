@@ -55,7 +55,7 @@ const Navbar = () => {
 			<section className="navBarLeftBox">
 				<button
 					onClick={() => {
-						navigate("/upload");
+						navigate("/");
 					}}
 				>
 					<img src={logo} alt="로고 이미지" />
