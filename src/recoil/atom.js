@@ -12,6 +12,7 @@ export const LoginState = atom({
 });
 
 export const currentFileState = atom({
-	key: "currentFileState",
-	default: "",
+	key: "currentFileState", // 고유한 key 값
+	default: "", // 기본값 설정
+	effects_UNSTABLE: [persistAtom], // persistAtom effect를 추가하여 상태를 지속
 });
