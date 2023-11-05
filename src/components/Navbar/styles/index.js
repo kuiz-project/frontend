@@ -29,6 +29,8 @@ export const NavbarWrapper = styled.div`
       gap: 8px;
     }
   .navBarRightBox {
+    display:flex;
+    gap:10px;
     height:42px;
 
     .loginBtn {
@@ -48,13 +50,13 @@ export const NavbarWrapper = styled.div`
 `;
 
 export const NavBarItem = styled.button`
-  padding: 16px 24px 16px 23px;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  color: ${({ isSelected }) => (isSelected ? "#3830a3" : "#a3a3a3")};
-  &:hover {
-    color: #3730a3;
-  }
+	padding: 16px 24px 16px 23px;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	font-size: 16px;
+	color: ${({ isSelected }) => (isSelected ? "#3830a3" : "#a3a3a3")};
+	&:hover {
+		color: #3730a3;
+	}
 `;
