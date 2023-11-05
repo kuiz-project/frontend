@@ -235,21 +235,25 @@ const Upload = () => {
 		}
 		const targetDirectoryId = targetDirectory[0].folder_id;
 		const targetSubjectName = targetSubject[0].subjectName;
-		if (targetDirectoryId && targetSubjectName && currentFile) {
+		if (targetDirectoryId && targetSubjectName && selectedFileName) {
 			formData.append("subject", targetSubjectName);
 			formData.append("folder", targetDirectoryId);
 			formData.append("file", fileObj);
 			setFormData(formData);
 			setPdfIsSelected(true);
 			return true;
+		} else {
+			setPdfIsSelected(false);
+			return false;
 		}
 	};
 
 	useEffect(() => {
+		console.log(selectedFileName);
 		if (handleValidateUpload()) {
 			setPdfIsSelected(true);
 		}
-	}, [directories, subjects, currentFile]);
+	}, [directories, subjects, selectedFileName]);
 
 	// 파일 편집 모드
 	const handleFileEdit = (e, dirId, pdfId) => {
