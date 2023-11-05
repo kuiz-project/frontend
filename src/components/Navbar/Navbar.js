@@ -12,6 +12,7 @@ const Navbar = () => {
 	const navigate = useNavigate();
 
 	// 로그인 상태
+
 	const [isLoginState, setIsLoginState] = useRecoilState(LoginState);
 
 	// Nav바 상태
@@ -75,7 +76,6 @@ const Navbar = () => {
 				<section className="navBarRightBox">
 					{isLoginState ? (
 						<>
-							<img src={user} className="userProfile" alt="유저 로고 이미지" />
 							<button
 								src={login}
 								className="loginBtn"
@@ -84,11 +84,13 @@ const Navbar = () => {
 									// 로그아웃 완료
 									if (res.status === 200) {
 										setIsLoginState(false);
+										navigate("/");
 									}
 								}}
 							>
 								로그아웃
 							</button>
+							<img src={user} className="userProfile" alt="유저 로고 이미지" />
 						</>
 					) : (
 						<button
