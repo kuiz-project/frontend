@@ -79,7 +79,7 @@ const Pdf = () => {
 	};
 
 	useEffect(() => {
-		if (curPage && multipleChoiceNumber && subjectiveNumber) {
+		if (curPage && (multipleChoiceNumber || subjectiveNumber)) {
 			setIsSelected(true);
 		} else {
 			setIsSelected(false);

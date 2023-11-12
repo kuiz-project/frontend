@@ -41,13 +41,11 @@ export const DirLeft = styled.div`
 	gap: 8px;
 `;
 export const DirEditBtn = styled.button`
+	font-size: 15px;
+	white-space: nowrap;
 	img {
 		width: 20px;
 		height: 20px;
-	}
-
-	span {
-		font-size: 10px;
 	}
 `;
 
@@ -251,6 +249,10 @@ export const FileInput = styled.input`
 	outline: none;
 	background: none;
 	padding: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 `;
 
 export const FileItemWrapper = styled.button`

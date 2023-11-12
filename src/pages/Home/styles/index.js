@@ -2,35 +2,39 @@ import styled from "styled-components";
 
 export const HomeWrapper = styled.div`
 	background: #e7ecf8;
-	width: 100%;
+
 	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
 `;
 
-export const HomeTitleBox = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 64px;
-`;
+export const HomeTitleBox = styled.div``;
 
-export const HomeTitleText = styled.span`
+export const HomeTitleText = styled.p`
 	color: #000;
 	font-family: "Noto Sans KR_Bold";
 	font-size: 64px;
-	line-height: 26px; /* 40.625% */
+	white-space: normal;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 `;
 
-export const HomeTitleText2 = styled.span`
+export const HomeTitleText2 = styled.p`
 	color: #000;
 	font-family: "Noto Sans KR_Medium";
 	font-size: 48px;
-	line-height: 26px;
+	white-space: normal;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 `;
 
-export const HomeImg = styled.div`
-	width: 500px;
-	height: 500px;
-	background: yellow;
+export const HomeImg = styled.img`
+	@media screen and (max-width: 1200px) {
+		display: none;
+	}
 `;

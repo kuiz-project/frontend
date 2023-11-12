@@ -36,18 +36,27 @@ const Upload = () => {
 	const [pdfIsSelected, setPdfIsSelected] = useState(false);
 	const [formData, setFormData] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-
 	const fetchInitialData = async () => {
 		const res = await myfolderAPI.get();
 		const res2 = await pdfsubjectAPI.get();
 
 		try {
 			if (res.status === 200) {
-				const updatedDirectories = res.data.folderDtos.map((directory) => ({
-					...directory,
-					isSelected: false,
-					isEdit: false,
-				}));
+				const updatedDirectories = res.data.folderDtos.map((directory) => {
+					const updatedPdfs = directory.pdfDtos.map((pdf) => {
+						return {
+							...pdf,
+							isSelected: false,
+							isEdit: false,
+						};
+					});
+					return {
+						...directory,
+						pdfDtos: updatedPdfs,
+						isSelected: false,
+						isEdit: false,
+					};
+				});
 				setDirectories(updatedDirectories);
 			}
 			if (res2.status === 200) {
@@ -213,8 +222,8 @@ const Upload = () => {
 				setIsLoading(true);
 				setPdfIsSelected(false);
 				const res = await uploadpdfAPI.post("", formData);
-				setIsLoading(false);
 				if (res.status === 200) {
+					setIsLoading(false);
 					navigate(`/pdf/${res.data.pdf_id}`);
 				}
 			} catch (e) {
@@ -249,12 +258,10 @@ const Upload = () => {
 	};
 
 	useEffect(() => {
-		console.log(selectedFileName);
 		if (handleValidateUpload()) {
 			setPdfIsSelected(true);
 		}
 	}, [directories, subjects, selectedFileName]);
-
 	// 파일 편집 모드
 	const handleFileEdit = (e, dirId, pdfId) => {
 		const newDirectories = directories.map((dir) => {
@@ -271,17 +278,19 @@ const Upload = () => {
 	};
 
 	// 디렉토리 편집 모드
-	const handleDirEdit = (dirId) => {
-		if (isEditMode) {
-			const newDirectories = directories.map((directory) => {
-				if (directory.folder_id === dirId) {
-					return { ...directory, isEdit: !directory.isEdit, isSelected: false };
-				} else {
-					return { ...directory, isSelected: false, isEdit: false };
-				}
-			});
-			setDirectories(newDirectories);
-		}
+	const handleDirEdit = (dir) => {
+		const newDirectories = directories.map((directory) => {
+			if (directory.folder_id === dir.folder_id) {
+				return {
+					...directory,
+					isEdit: !directory.isEdit,
+					isSelected: false,
+				};
+			} else {
+				return { ...directory, isSelected: false, isEdit: false };
+			}
+		});
+		setDirectories(newDirectories);
 	};
 
 	const convertBlobToFileObject = async (blob, filename) => {
@@ -309,13 +318,15 @@ const Upload = () => {
 			const fileObject = await convertBlobToFileObject(pdfBlob, filename);
 			if (fileObject && fileType.includes(fileObject.type)) {
 				setFileObj(fileObject);
-				setSelectedFileName(fileObject.name);
-				let reader = new FileReader();
-				reader.readAsDataURL(fileObject);
-				reader.onload = async (e) => {
-					setCurrentFile(e.target.result);
-					navigate(`/pdf/${pdf_id}`);
-				};
+				if (fileObject.name) {
+					setSelectedFileName(fileObject.name);
+					let reader = new FileReader();
+					reader.readAsDataURL(fileObject);
+					reader.onload = async (e) => {
+						setCurrentFile(e.target.result);
+						navigate(`/pdf/${pdf_id}`);
+					};
+				}
 			}
 		} catch (error) {
 			console.error("Error fetching PDF from S3:", error);
@@ -323,36 +334,47 @@ const Upload = () => {
 	};
 	// (파일 클릭) 업로드 할 때는 전체 디렉토리에서 하나만 클릭 가능
 	const handleFileClick = async (dirId, pdf) => {
-		const newDirectories = directories.map((dir) => {
-			if (dir.pdfDtos) {
-				const newFiles = dir.pdfDtos.map(async (file) => {
-					// 편집 모드 일때만 다중 선택 가능 else
-					if (dir.folder_id === dirId && file.pdf_id === pdf.pdf_id) {
+		// 해당 파일이 들어있는 디렉토리
+		const targetDirectory = directories.find((dir) => dir.folder_id === dirId);
+		// Promise.all을 사용해 모든 프로미스를 처리.
+		// 새로운 pdf 배열
+		const newPdfDtos = await Promise.all(
+			targetDirectory.pdfDtos.map(async (file) => {
+				// 타겟 파일
+				if (file.pdf_id === pdf.pdf_id) {
+					if (isEditMode) {
+						// 편집 모드일 때 isSelected 상태 토글
+						return { ...file, isSelected: !file.isSelected };
+					}
+					// 편집 모드가 아닐때는 업로드
+					else {
 						try {
+							setIsLoading(true);
 							const pdfurl = await pdfurlAPI.get(`${file.pdf_id}`);
 							if (pdfurl.status === 200) {
-								const fileObj = getFileObjectFromS3Url(
+								await getFileObjectFromS3Url(
 									pdfurl.data.presignedUrl,
 									pdf.file_name,
 									pdf.pdf_id
 								);
 							}
+							setIsLoading(false);
 						} catch (e) {
 							console.log(e);
+							setIsLoading(false);
 						}
-						return { ...file, isSelected: !file.isSelected };
-					} else {
-						if (isEditMode) {
-							return { ...file };
-						} else {
-							return { ...file, isSelected: false };
-						}
+						return file; // PDF 업로드 로직은 파일 객체 변경 없이 진행
 					}
-				});
-				return { ...dir, pdfDtos: newFiles };
-			}
-			return { ...dir };
-		});
+				} else {
+					return file; // 변경 없는 파일 객체 반환
+				}
+			})
+		);
+
+		// directories를 업데이트할 때 spread 연산자를 올바르게 사용합니다.
+		const newDirectories = directories.map((dir) =>
+			dir.folder_id === dirId ? { ...dir, pdfDtos: newPdfDtos } : dir
+		);
 		setDirectories(newDirectories);
 	};
 
@@ -406,16 +428,21 @@ const Upload = () => {
 								<S.DirEditBtn
 									onClick={(e) => {
 										e.stopPropagation();
-										handleDirEdit(directory.folder_id);
+										handleDirEdit(directory);
 									}}
 								>
-									{directory.isEdit ? (
-										<span>확인</span>
+									{isEditMode ? (
+										directory.isEdit ? (
+											""
+										) : (
+											<img src={edit} alt="수정 이미지" />
+										)
 									) : (
-										<img src={edit} alt="수정 이미지" />
+										""
 									)}
 								</S.DirEditBtn>
 							</S.DirTitle>
+
 							{directory.isSelected && (
 								<S.DirInner>
 									{directory.pdfDtos?.map((pdf) => (
@@ -444,11 +471,7 @@ const Upload = () => {
 													handleFileEdit(e, directory.folder_id, pdf.pdf_id);
 												}}
 											>
-												{pdf.isEdit ? (
-													<span>확인</span>
-												) : (
-													<img src={edit} alt="수정 이미지" />
-												)}
+												{isEditMode ? <img src={edit} alt="수정 이미지" /> : ""}
 											</S.FileEditBtn>
 										</S.FileItemWrapper>
 									))}

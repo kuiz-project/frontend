@@ -58,6 +58,9 @@ const GlobalStyles = createGlobalStyle`
     border: none;
 }
     }
+    img{
+        max-width:100%;
+    }
 
 `;
 
