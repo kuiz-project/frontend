@@ -214,9 +214,6 @@ box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.10);
         height:35px;
         margin-bottom:62px;
       }
-      .left_body_header {
-        display:none;
-      }
       .left_body_contents {
         display: flex;
         flex-direction: row;

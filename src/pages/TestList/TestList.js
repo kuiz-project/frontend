@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import * as S from "./styles/index";
 import { testanswerAPI, testnoansnwerAPI } from "./../../apis/API";
 import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
-import axios from "axios";
 import ErrorModal from "../../components/Modal/ErrorModal";
+import spinner from "../../assets/images/spinner.gif";
+import axios from "axios";
 const TestList = () => {
 	const { testId } = useParams();
-	const location = useLocation();
 	const [submitted, setSubmitted] = useState(false);
 	const [selectedChoices, setSelectedChoices] = useState({});
 	const [answers, setAnswers] = useState({});
 	const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
 	const [isErrorModal, setIsErrorModal] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const leaveModal = () => {
 		setIsErrorModal(false);
@@ -108,6 +107,7 @@ const TestList = () => {
 				JSON.stringify(transformedRequest, null, 2)
 			);
 			// 2. POST 요청을 보냅니다.
+			setIsLoading(true);
 			const response = await axios.post(
 				"https://3.39.190.225:8443/api/test/scoretest",
 				transformedRequest,
@@ -118,6 +118,7 @@ const TestList = () => {
 			setTimeout(async () => {
 				const response = await testanswerAPI.get(testId);
 				console.log(response);
+				setIsLoading(false);
 
 				if (response.data && response.data.questions) {
 					const updatedQuestions = questions.map((question, index) => {
@@ -137,6 +138,7 @@ const TestList = () => {
 				}
 			}, 2000); // 10초 = 10000ms
 		} catch (error) {
+			setIsLoading(false);
 			setIsErrorModal(true);
 			console.error("Error fetching the answer results:", error);
 		}
@@ -263,8 +265,13 @@ const TestList = () => {
 				<S.SubmitButton
 					disabled={!allQuestionsAnswered() || submitted}
 					onClick={handleSubmitAnswers}
+					isLoading={isLoading}
 				>
-					제출
+					{isLoading ? (
+						<S.Spinner src={spinner} alt="로딩 애니메이션" />
+					) : (
+						"제출"
+					)}
 				</S.SubmitButton>
 			</S.StickyFooter>
 			{isErrorModal && <ErrorModal leaveModal={leaveModal} />}

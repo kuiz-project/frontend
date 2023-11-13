@@ -53,6 +53,7 @@ export const SideBarWrapper = styled.section`
 	position: fixed;
 	top: 100px;
 	z-index: 998;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 	height: 100%;
 	width: 234px;
 	background-color: white;

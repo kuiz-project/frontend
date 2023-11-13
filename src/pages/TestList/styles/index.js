@@ -58,7 +58,6 @@ export const TestTitleMain = styled.div`
 
 export const TestTitle = styled.div`
 	width: 100%;
-	height: 59px;
 	border-radius: 8px 8px 0px 0px;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 	margin-bottom: 4px;
@@ -225,13 +224,9 @@ export const SubmitButton = styled.button`
 	border-radius: 44px;
 	margin-left: auto;
 	font-size: 16px;
-	background-color: #312e81;
-	color: white;
-	&:disabled {
-		background-color: #bdc3c7;
-		cursor: not-allowed;
-		color: black;
-	}
+	background: #312e81;
+	color: #fff;
+	cursor: ${({ isLoading }) => (isLoading ? "progress" : "pointer")};
 `;
 export const IncorrectAnswerNotice = styled.div`
 	height: 100px;
@@ -245,4 +240,7 @@ export const IncorrectAnswerNotice = styled.div`
 	border-radius: 0px 0px 8px 8px;
 	background: white;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+`;
+export const Spinner = styled.img`
+	width: 75px;
 `;

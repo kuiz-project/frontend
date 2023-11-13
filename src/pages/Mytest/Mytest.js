@@ -84,12 +84,12 @@ const Mytest = () => {
 							}
 							onClick={() => handleDivClick(index, test.test_id)}
 						>
-							<div className="b1">{test.folder_name}</div>
-							<div className="b2">{test.subject}</div>
-							<div className="b3">{test.file_name}</div>
-							<div className="b4">{test.page}</div>
-							<div className="b5">{test.date}</div>
-							<div className="b6">{test.score}</div>
+							<span className="b1">{test.folder_name}</span>
+							<span className="b2">{test.subject}</span>
+							<span className="b3">{test.file_name}</span>
+							<span className="b4">{test.page}</span>
+							<span className="b5">{test.date}</span>
+							<span className="b6">{test.score}</span>
 							{/* 점수 정보가 API 응답에 없기 때문에 임시 텍스트를 넣었습니다. */}
 						</div>
 					))}
