@@ -63,6 +63,7 @@ const Navbar = () => {
 			setIsLoginState(false);
 			navigate("/");
 		}
+		localStorage.clear();
 	};
 	return (
 		<S.NavbarWrapper>
