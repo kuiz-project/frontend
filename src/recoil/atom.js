@@ -16,3 +16,9 @@ export const currentFileState = atom({
 	default: "", // 기본값 설정
 	effects_UNSTABLE: [persistAtom], // persistAtom effect를 추가하여 상태를 지속
 });
+
+export const userNameState = atom({
+	key: "userNameState",
+	default: "",
+	effects_UNSTABLE: [persistAtom], // persistAtom effect를 추가하여 상태를 지속
+});

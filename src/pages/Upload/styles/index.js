@@ -164,6 +164,9 @@ export const SelectWrapper = styled.div`
 `;
 
 export const SelectTitle = styled.div`
+	position: sticky;
+	left: 0;
+	top: 55px;
 	color: #000;
 	font-family: Noto Sans KR_Medium;
 	font-size: 20px;
@@ -282,6 +285,8 @@ export const FileEditBtn = styled.button`
 `;
 
 export const Footer = styled.div`
+	max-width: 1920px;
+	margin: 0 auto;
 	display: flex;
 	align-items: center;
 	width: 100%;
@@ -290,11 +295,12 @@ export const Footer = styled.div`
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 	position: fixed;
 	bottom: 0;
-	z-index: 10000;
+	z-index: 5;
 	background-color: white;
+	justify-content: flex-end;
+	padding: 0 10px;
 `;
 export const UploadBtn = styled.button`
-	position: fixed;
 	right: 64px;
 	display: flex;
 	width: 240px;

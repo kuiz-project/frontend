@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/images/logo.svg";
-import user from "../../assets/images/Ellipse 2.svg";
 import login from "../../assets/images/loginbutton.svg";
 import * as S from "./styles/index";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { LoginState } from "../../recoil/atom";
+import { LoginState, loginModalState } from "../../recoil/atom";
 import { logoutPostAPI } from "../../apis/API";
+import NavbarModal from "./NavbarModal";
 
 const Navbar = () => {
 	const navigate = useNavigate();
-
 	// 로그인 상태
 
 	const [isLoginState, setIsLoginState] = useRecoilState(LoginState);
+	const [isLoginModal, setIsLoginModal] = useState(false);
 
 	// Nav바 상태
 	const [navItem, setNavItem] = useState([
@@ -26,6 +26,10 @@ const Navbar = () => {
 			isSelected: false,
 		},
 	]);
+
+	const toggleModal = () => {
+		setIsLoginModal(!isLoginModal);
+	};
 
 	const handleNavItem = (index) => {
 		if (isLoginState) {
@@ -52,6 +56,14 @@ const Navbar = () => {
 		}
 	};
 
+	const handleLogout = async () => {
+		const res = await logoutPostAPI.post();
+		// 로그아웃 완료
+		if (res.status === 200) {
+			setIsLoginState(false);
+			navigate("/");
+		}
+	};
 	return (
 		<S.NavbarWrapper>
 			<section className="navBarLeftBox">
@@ -81,32 +93,41 @@ const Navbar = () => {
 				<section className="navBarRightBox">
 					{isLoginState ? (
 						<>
+							<i class="fa-solid fa-bars" onClick={toggleModal}></i>
 							<button
 								src={login}
 								className="loginBtn"
-								onClick={async () => {
-									const res = await logoutPostAPI.post();
-									// 로그아웃 완료
-									if (res.status === 200) {
-										setIsLoginState(false);
-										navigate("/");
-									}
+								onClick={() => {
+									handleLogout();
 								}}
 							>
 								로그아웃
 							</button>
-							<img src={user} className="userProfile" alt="유저 로고 이미지" />
+
+							<NavbarModal
+								handleLogout={handleLogout}
+								isModalOpen={isLoginModal}
+								toggleModal={toggleModal}
+							/>
 						</>
 					) : (
-						<button
-							src={login}
-							className="loginBtn"
-							onClick={() => {
-								navigate("/login");
-							}}
-						>
-							로그인
-						</button>
+						<>
+							<i class="fa-solid fa-bars" onClick={toggleModal}></i>
+							<button
+								src={login}
+								className="loginBtn"
+								onClick={() => {
+									navigate("/login");
+								}}
+							>
+								로그인
+							</button>
+							<NavbarModal
+								handleLogout={handleLogout}
+								isModalOpen={isLoginModal}
+								toggleModal={toggleModal}
+							/>
+						</>
 					)}
 				</section>
 			</section>

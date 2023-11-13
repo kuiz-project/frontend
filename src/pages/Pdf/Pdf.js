@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { testAPI } from "../../apis/API";
+import ErrorModal from "../../components/Modal/ErrorModal";
 const Pdf = () => {
 	const { pdfId } = useParams();
 
@@ -30,6 +31,11 @@ const Pdf = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const [curPage, setCurPage] = useState(0);
+	const [isErrorModal, setIsErrorModal] = useState(false);
+
+	const leaveModal = () => {
+		setIsErrorModal(false);
+	};
 	useEffect(() => {
 		if (currentFile !== null) {
 			setViewpdf(currentFile);
@@ -56,6 +62,7 @@ const Pdf = () => {
 					navigate(`/testlist/${res.data.test_id}`);
 				}
 			} catch (e) {
+				setIsErrorModal(true);
 				setIsLoading(false);
 				setIsSelected(true);
 				console.log(e);
@@ -64,6 +71,17 @@ const Pdf = () => {
 	};
 	const handlerPagePage = (e) => {
 		setCurPage(e.currentPage);
+	};
+
+	const handleMultipleChoiceNumber = (number) => {
+		if (number + subjectiveNumber <= 5) {
+			setMultipleChoiceNumber(number);
+		}
+	};
+	const handleSubjectiveChoiceNumber = (number) => {
+		if (number + multipleChoiceNumber <= 5) {
+			setSubjectiveNumber(number);
+		}
 	};
 
 	const pageLayout = {
@@ -113,7 +131,7 @@ const Pdf = () => {
 								src={up}
 								className="up"
 								onClick={() =>
-									setMultipleChoiceNumber(multipleChoiceNumber + 1)
+									handleMultipleChoiceNumber(multipleChoiceNumber + 1)
 								}
 								alt="증가 버튼"
 							/>
@@ -122,7 +140,7 @@ const Pdf = () => {
 								className="down"
 								onClick={() =>
 									multipleChoiceNumber > 0 &&
-									setMultipleChoiceNumber(multipleChoiceNumber - 1)
+									handleMultipleChoiceNumber(multipleChoiceNumber - 1)
 								}
 								alt="감소 버튼"
 							/>
@@ -137,7 +155,9 @@ const Pdf = () => {
 							<img
 								src={up}
 								className="up"
-								onClick={() => setSubjectiveNumber(subjectiveNumber + 1)}
+								onClick={() =>
+									handleSubjectiveChoiceNumber(subjectiveNumber + 1)
+								}
 								alt="증가 버튼"
 							/>
 							<img
@@ -145,7 +165,7 @@ const Pdf = () => {
 								className="down"
 								onClick={() =>
 									subjectiveNumber > 0 &&
-									setSubjectiveNumber(subjectiveNumber - 1)
+									handleSubjectiveChoiceNumber(subjectiveNumber - 1)
 								}
 								alt="감소 버튼"
 							/>
@@ -164,6 +184,7 @@ const Pdf = () => {
 					)}
 				</S.GenerateBtn>
 			</S.GenerateWrapper>
+			{isErrorModal && <ErrorModal leaveModal={leaveModal} />}
 		</S.PdfWrapper>
 	);
 };

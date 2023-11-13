@@ -3,7 +3,9 @@ import * as S from "./styles/index";
 import { testanswerAPI, testnoansnwerAPI } from "./../../apis/API";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+
 import axios from "axios";
+import ErrorModal from "../../components/Modal/ErrorModal";
 const TestList = () => {
 	const { testId } = useParams();
 	const location = useLocation();
@@ -11,6 +13,11 @@ const TestList = () => {
 	const [selectedChoices, setSelectedChoices] = useState({});
 	const [answers, setAnswers] = useState({});
 	const [questions, setQuestions] = useState([]); // questions를 상태로 초기화
+	const [isErrorModal, setIsErrorModal] = useState(false);
+
+	const leaveModal = () => {
+		setIsErrorModal(false);
+	};
 
 	useEffect(() => {
 		const fetchApiData = async () => {
@@ -41,6 +48,7 @@ const TestList = () => {
 
 				setQuestions(formattedQuestions);
 			} catch (error) {
+				setIsErrorModal(true);
 				console.error("Error fetching the test data:", error);
 			}
 		};
@@ -129,6 +137,7 @@ const TestList = () => {
 				}
 			}, 2000); // 10초 = 10000ms
 		} catch (error) {
+			setIsErrorModal(true);
 			console.error("Error fetching the answer results:", error);
 		}
 	};
@@ -258,6 +267,7 @@ const TestList = () => {
 					제출
 				</S.SubmitButton>
 			</S.StickyFooter>
+			{isErrorModal && <ErrorModal leaveModal={leaveModal} />}
 		</S.AppContainer>
 	);
 };

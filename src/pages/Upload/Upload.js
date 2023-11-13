@@ -21,6 +21,7 @@ import {
 	updatepdfAPI,
 	uploadpdfAPI,
 } from "./../../apis/API";
+import ErrorModal from "../../components/Modal/ErrorModal";
 
 const Upload = () => {
 	const [currentFile, setCurrentFile] = useRecoilState(currentFileState);
@@ -36,6 +37,12 @@ const Upload = () => {
 	const [pdfIsSelected, setPdfIsSelected] = useState(false);
 	const [formData, setFormData] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const [isErrorModal, setIsErrorModal] = useState(false);
+
+	const leaveModal = () => {
+		setIsErrorModal(false);
+	};
+
 	const fetchInitialData = async () => {
 		const res = await myfolderAPI.get();
 		const res2 = await pdfsubjectAPI.get();
@@ -228,8 +235,8 @@ const Upload = () => {
 				}
 			} catch (e) {
 				setIsLoading(false);
+				setIsErrorModal(true);
 				setPdfIsSelected(true);
-				console.log(e);
 			}
 		}
 	};
@@ -548,6 +555,7 @@ const Upload = () => {
 					)}
 				</S.UploadBtn>
 			</S.Footer>
+			{isErrorModal && <ErrorModal leaveModal={leaveModal} />}
 		</S.UploadWrapper>
 	);
 };

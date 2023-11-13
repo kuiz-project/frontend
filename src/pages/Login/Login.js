@@ -3,7 +3,7 @@ import * as S from "./styles/index";
 import logo from "../../assets/images/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { LoginState } from "../../recoil/atom";
+import { LoginState, userNameState } from "../../recoil/atom";
 import { loginPostAPI } from "./../../apis/API";
 import {
 	InputBox,
@@ -19,6 +19,7 @@ const LoginPage = () => {
 	const [pw, setPw] = useState("");
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const [username, setUsername] = useRecoilState(userNameState);
 
 	const handleLogin = async () => {
 		const submission = {
@@ -28,8 +29,9 @@ const LoginPage = () => {
 		try {
 			const res = await loginPostAPI.post("", submission);
 			if (res.status === 200) {
+				setUsername(res.data.name);
 				setIsLoginState(true);
-				navigate("/upload");
+				navigate("/");
 			}
 		} catch (err) {
 			if (err.response.status === 400) {
