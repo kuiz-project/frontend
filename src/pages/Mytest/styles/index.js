@@ -127,6 +127,8 @@ export const MytestWrapper = styled.div`
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      text-align:center;
+      font-size:14px;
     }
 
     .b1 {
@@ -193,6 +195,7 @@ export const MytestWrapper = styled.div`
       bottom:0px;
       position:fixed;
       border-top: 1px solid #E1E1E1;
+          max-width: 1920px;
 background: #FFF;
 
 /* header */

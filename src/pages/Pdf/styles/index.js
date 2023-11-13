@@ -89,6 +89,15 @@ export const GenerateWrapper = styled.div`
 		height: 48px;
 		align-items: center;
 	}
+	.currentPageNumber {
+		margin-right: 30px;
+		color: #525252;
+		font-family: Noto Sans KR;
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: normal;
+	}
 
 	.subjective {
 		display: flex;

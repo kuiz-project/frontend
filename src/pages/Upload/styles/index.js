@@ -286,7 +286,6 @@ export const FileEditBtn = styled.button`
 `;
 
 export const Footer = styled.div`
-	max-width: 1920px;
 	margin: 0 auto;
 	display: flex;
 	align-items: center;
@@ -300,6 +299,7 @@ export const Footer = styled.div`
 	background-color: white;
 	justify-content: flex-end;
 	padding: 0 10px;
+	max-width: 1920px;
 `;
 export const UploadBtn = styled.button`
 	right: 64px;

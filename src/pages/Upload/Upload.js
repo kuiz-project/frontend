@@ -44,10 +44,9 @@ const Upload = () => {
 	};
 
 	const fetchInitialData = async () => {
-		const res = await myfolderAPI.get();
-		const res2 = await pdfsubjectAPI.get();
-
 		try {
+			const res = await myfolderAPI.get();
+			const res2 = await pdfsubjectAPI.get();
 			if (res.status === 200) {
 				const updatedDirectories = res.data.folderDtos.map((directory) => {
 					const updatedPdfs = directory.pdfDtos.map((pdf) => {
@@ -76,6 +75,7 @@ const Upload = () => {
 				setSubjects(updatedSubjects);
 			}
 		} catch (e) {
+			setIsErrorModal(true);
 			console.log(e);
 		}
 	};
@@ -85,8 +85,11 @@ const Upload = () => {
 		try {
 			if (res.status === 200) {
 				setDirectories(res.data.folderDtos);
+			} else {
+				setIsErrorModal(true);
 			}
 		} catch (e) {
+			setIsErrorModal(true);
 			console.log(e);
 		}
 	};
@@ -102,8 +105,11 @@ const Upload = () => {
 			const res = await createfolderPostAPI.post("");
 			if (res.status === 200) {
 				fetchData();
+			} else {
+				setIsErrorModal(true);
 			}
 		} catch (e) {
+			setIsErrorModal(true);
 			console.log(e);
 		}
 	};
@@ -125,8 +131,11 @@ const Upload = () => {
 					);
 					if (res.status === 200) {
 						fetchData();
+					} else {
+						setIsErrorModal(true);
 					}
 				} catch (e) {
+					setIsErrorModal(true);
 					console.log(e);
 				}
 			}
@@ -139,8 +148,11 @@ const Upload = () => {
 					);
 					if (res.status === 200) {
 						fetchData();
+					} else {
+						setIsErrorModal(true);
 					}
 				} catch (e) {
+					setIsErrorModal(true);
 					console.log(e);
 				}
 			}
@@ -158,6 +170,8 @@ const Upload = () => {
 				}
 			});
 			setDirectories(newDirectories);
+		} else {
+			setIsErrorModal(true);
 		}
 	};
 
@@ -175,6 +189,7 @@ const Upload = () => {
 					fetchData();
 				}
 			} catch (e) {
+				setIsErrorModal(true);
 				console.log(e);
 			}
 		}
@@ -192,6 +207,7 @@ const Upload = () => {
 					fetchData();
 				}
 			} catch (e) {
+				setIsErrorModal(true);
 				console.log(e);
 			}
 		}
@@ -312,10 +328,12 @@ const Upload = () => {
 		try {
 			const response = await fetch(url);
 			if (!response.ok) {
+				setIsErrorModal(true);
 				throw new Error("Network response was not ok");
 			}
 			return response.blob();
 		} catch (e) {
+			setIsErrorModal(true);
 			console.log(e);
 		}
 	};
@@ -336,6 +354,7 @@ const Upload = () => {
 				}
 			}
 		} catch (error) {
+			setIsErrorModal(true);
 			console.error("Error fetching PDF from S3:", error);
 		}
 	};
@@ -367,6 +386,7 @@ const Upload = () => {
 							}
 							setIsLoading(false);
 						} catch (e) {
+							setIsErrorModal(true);
 							console.log(e);
 							setIsLoading(false);
 						}

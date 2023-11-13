@@ -30,6 +30,7 @@ const Mytest = () => {
 					setTests(response.data);
 				} else {
 					// 오류 처리 또는 기본값 설정
+					setIsErrorModal(true);
 					console.error("Unexpected API response:", response.data);
 					setTests([]); // 이 부분은 선택사항입니다. 오류가 발생할 경우 빈 배열로 상태를 유지합니다.
 				}

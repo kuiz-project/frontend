@@ -57,6 +57,9 @@ const TestList = () => {
 
 	// 사용자가 제출했는지 여부를 확인하는 상태
 	const handleSubmitAnswers = async () => {
+		if (isLoading) {
+			return;
+		}
 		try {
 			const transformRequestData = (data) => {
 				return {
@@ -106,8 +109,10 @@ const TestList = () => {
 				"Sending this JSON:",
 				JSON.stringify(transformedRequest, null, 2)
 			);
+
 			// 2. POST 요청을 보냅니다.
 			setIsLoading(true);
+
 			const response = await axios.post(
 				"https://3.39.190.225:8443/api/test/scoretest",
 				transformedRequest,
@@ -263,7 +268,7 @@ const TestList = () => {
 			</S.TestWrapper>
 			<S.StickyFooter>
 				<S.SubmitButton
-					disabled={!allQuestionsAnswered() || submitted}
+					disabled={!allQuestionsAnswered()}
 					onClick={handleSubmitAnswers}
 					isLoading={isLoading}
 				>

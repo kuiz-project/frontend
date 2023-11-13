@@ -224,8 +224,14 @@ export const SubmitButton = styled.button`
 	border-radius: 44px;
 	margin-left: auto;
 	font-size: 16px;
-	background: #312e81;
-	color: #fff;
+
+	background-color: ${({ isLoading }) => (isLoading ? "#e1e1e1" : "#312e81")};
+	color: white;
+	&:disabled {
+		background-color: #bdc3c7;
+		cursor: not-allowed;
+		color: black;
+	}
 	cursor: ${({ isLoading }) => (isLoading ? "progress" : "pointer")};
 `;
 export const IncorrectAnswerNotice = styled.div`

@@ -122,6 +122,7 @@ const Pdf = () => {
 				)}
 			</Worker>
 			<S.GenerateWrapper>
+				<span className="currentPageNumber">{`현재 페이지 : ${curPage}`}</span>
 				<div className="multiple">
 					<div className="probType">객관식</div>
 					<div className="number_select">
