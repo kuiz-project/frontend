@@ -162,6 +162,10 @@ export const SelectWrapper = styled.div`
 		/* This is the magic bit for WebKit */
 		display: none;
 	}
+	.hidden {
+		width: 100%;
+		height: 10px;
+	}
 `;
 
 export const SelectTitle = styled.div`
@@ -173,15 +177,16 @@ export const SelectTitle = styled.div`
 	font-size: 20px;
 `;
 
-export const List = styled.span`
+export const List = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 	width: 400px;
+	height: 100%;
 `;
 //강의명 임시로 괜찮게 보이도록 마진 설정함
-export const List2 = styled.span`
-	margin-top: 600px;
+export const List2 = styled.div`
+	height: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
@@ -195,7 +200,6 @@ export const SelectItem = styled.button`
 	font-weight: 700;
 	color: ${({ isSelected }) => (isSelected ? "#3730A3" : "#A3A3A3")};
 	font-size: 20px;
-
 	display: flex;
 	align-items: center;
 `;

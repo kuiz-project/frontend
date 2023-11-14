@@ -496,26 +496,36 @@ const Upload = () => {
 					<S.SelectWrapper>
 						<S.SelectTitle>디렉토리명</S.SelectTitle>
 						<S.List>
-							{directories.map((directory) => (
-								<S.SelectItem
-									isSelected={directory.isSelected}
-									onClick={() => handleDirectoryClick(directory)}
-								>
-									{directory.folder_name}
-								</S.SelectItem>
+							{directories.map((directory, index) => (
+								<>
+									<S.SelectItem
+										isSelected={directory.isSelected}
+										onClick={() => handleDirectoryClick(directory)}
+									>
+										{directory.folder_name}
+									</S.SelectItem>
+									{index === directories.length - 1 && (
+										<div className="hidden"></div>
+									)}
+								</>
 							))}
 						</S.List>
 					</S.SelectWrapper>
 					<S.SelectWrapper>
 						<S.SelectTitle>강의명</S.SelectTitle>
 						<S.List2>
-							{subjects.map((subject) => (
-								<S.SelectItem
-									isSelected={subject.isSelected}
-									onClick={() => handleToggleSubject(subject)}
-								>
-									{subject.subjectName}
-								</S.SelectItem>
+							{subjects.map((subject, index) => (
+								<>
+									<S.SelectItem
+										isSelected={subject.isSelected}
+										onClick={() => handleToggleSubject(subject)}
+									>
+										{subject.subjectName}
+									</S.SelectItem>
+									{index === subjects.length - 1 && (
+										<div className="hidden"></div>
+									)}
+								</>
 							))}
 						</S.List2>
 					</S.SelectWrapper>

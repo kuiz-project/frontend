@@ -197,20 +197,18 @@ export const TestProblemSubjective = styled.textarea`
 export const AppContainer = styled.div`
 	display: flex;
 	flex-direction: column;
-	height: 87vh;
-	@media (min-height: 1024px) {
-		height: 91vh;
-	}
+	height: 100%;
+	padding-bottom: 200px;
 `;
 
 export const StickyFooter = styled.footer`
 	background-color: white;
 	box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.1);
 	width: 100%;
-	height: 100px;
-	position: sticky;
+	height: 77px;
+	position: absolute;
 	z-index: 5;
-	top: 0;
+	bottom: 0;
 `;
 
 export const SubmitButton = styled.button`
