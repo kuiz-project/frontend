@@ -129,7 +129,6 @@ export const Button = styled.button`
 	padding: 8px 12px;
 	color: #191f28;
 	letter-spacing: -0.02em;
-	background-color: #fff;
 	&:hover {
 		background-color: #f2f4f6;
 	}

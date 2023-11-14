@@ -193,10 +193,11 @@ const TestList = () => {
 							(question.type === "multipleChoice"
 								? answers[index] === question.answerIndex
 								: answers[index] === question.answerText);
-						const titleStyle =
-							submitted && !question.correct
-								? { backgroundColor: "#FDA5A5" }
-								: { backgroundColor: "#E7ECF8" };
+						const titleStyle = !submitted
+							? { backgorundColor: "#d3d3d3" }
+							: submitted && question.correct
+							? { backgroundColor: "#E7ECF8" }
+							: { backgroundColor: "#FDA5A5" };
 
 						if (question.type === "multipleChoice") {
 							return (
