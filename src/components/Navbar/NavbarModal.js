@@ -9,7 +9,6 @@ const NavbarModal = ({ handleLogout, isModalOpen, toggleModal }) => {
 	const navigate = useNavigate();
 	const [username, setUsername] = useRecoilState(userNameState);
 	const [isLoginState, setIsLoginState] = useRecoilState(LoginState);
-	console.log(isLoginState);
 	const modalRef = useRef(null);
 	const handleClose = () => {};
 	OutSideClick(modalRef, handleClose);

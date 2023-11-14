@@ -70,7 +70,7 @@ const Pdf = () => {
 		}
 	};
 	const handlerPagePage = (e) => {
-		setCurPage(e.currentPage);
+		setCurPage(e.currentPage + 1);
 	};
 
 	const handleMultipleChoiceNumber = (number) => {

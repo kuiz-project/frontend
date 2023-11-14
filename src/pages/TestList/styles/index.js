@@ -13,6 +13,7 @@ export const TestWrapper = styled.div`
 	}
 	-ms-overflow-style: none; /* IE, Edge에서 스크롤바를 숨김 */
 	scrollbar-width: none; /* Firefox에서 스크롤바를 숨김 */
+	margin-bottom: 100px;
 `;
 
 export const TestList = styled.div`

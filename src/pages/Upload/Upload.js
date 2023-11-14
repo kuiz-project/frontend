@@ -85,8 +85,6 @@ const Upload = () => {
 		try {
 			if (res.status === 200) {
 				setDirectories(res.data.folderDtos);
-			} else {
-				setIsErrorModal(true);
 			}
 		} catch (e) {
 			setIsErrorModal(true);
@@ -105,11 +103,8 @@ const Upload = () => {
 			const res = await createfolderPostAPI.post("");
 			if (res.status === 200) {
 				fetchData();
-			} else {
-				setIsErrorModal(true);
 			}
 		} catch (e) {
-			setIsErrorModal(true);
 			console.log(e);
 		}
 	};
@@ -131,11 +126,8 @@ const Upload = () => {
 					);
 					if (res.status === 200) {
 						fetchData();
-					} else {
-						setIsErrorModal(true);
 					}
 				} catch (e) {
-					setIsErrorModal(true);
 					console.log(e);
 				}
 			}
@@ -148,11 +140,8 @@ const Upload = () => {
 					);
 					if (res.status === 200) {
 						fetchData();
-					} else {
-						setIsErrorModal(true);
 					}
 				} catch (e) {
-					setIsErrorModal(true);
 					console.log(e);
 				}
 			}
@@ -170,8 +159,6 @@ const Upload = () => {
 				}
 			});
 			setDirectories(newDirectories);
-		} else {
-			setIsErrorModal(true);
 		}
 	};
 
@@ -189,7 +176,6 @@ const Upload = () => {
 					fetchData();
 				}
 			} catch (e) {
-				setIsErrorModal(true);
 				console.log(e);
 			}
 		}
@@ -207,7 +193,6 @@ const Upload = () => {
 					fetchData();
 				}
 			} catch (e) {
-				setIsErrorModal(true);
 				console.log(e);
 			}
 		}
@@ -386,9 +371,7 @@ const Upload = () => {
 							}
 							setIsLoading(false);
 						} catch (e) {
-							setIsErrorModal(true);
 							console.log(e);
-							setIsLoading(false);
 						}
 						return file; // PDF 업로드 로직은 파일 객체 변경 없이 진행
 					}
