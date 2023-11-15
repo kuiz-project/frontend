@@ -20,6 +20,10 @@ export const DirTitle = styled.div`
 	background: ${({ isSelected }) => (isSelected ? "#312e81" : "#EDEDED")};
 	padding: 11px;
 	justify-content: space-between;
+	&:hover {
+		background: ${({ isSelected }) => (isSelected ? "#312e81" : "#d3d3d3")};
+	}
+	transition: all 0.3s ease-out 0s;
 `;
 
 export const DirName = styled.span`
@@ -166,12 +170,10 @@ export const SelectWrapper = styled.div`
 		width: 100%;
 		height: 10px;
 	}
+	position: relative;
 `;
 
 export const SelectTitle = styled.div`
-	position: sticky;
-	left: 0;
-	top: 55px;
 	color: #000;
 	font-family: Noto Sans KR_Medium;
 	font-size: 20px;
