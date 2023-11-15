@@ -183,7 +183,7 @@ export const TestProblemSubjective = styled.textarea`
 	width: 90%;
 	height: 85%;
 	background-color: #d9d9d9;
-	font-size: 15px;
+	font-size: 18px;
 	padding-left: 10px;
 	padding-top: 10px;
 	border: none;
@@ -191,6 +191,12 @@ export const TestProblemSubjective = styled.textarea`
 	outline: none;
 	overflow: auto;
 	text-align: left;
+	font-family: Noto Sans KR;
+	input::-webkit-input-placeholder {
+		font-family: Noto Sans KR_Medium;
+		font-size: 18px;
+		color: #b4b4b4;
+	}
 `;
 
 export const AppContainer = styled.div`
