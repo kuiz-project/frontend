@@ -21,9 +21,8 @@ export const DirTitle = styled.div`
 	padding: 11px;
 	justify-content: space-between;
 	&:hover {
-		background: ${({ isSelected }) => (isSelected ? "#312e81" : "#d3d3d3")};
+		opacity: 0.8;
 	}
-	transition: all 0.3s ease-out 0s;
 `;
 
 export const DirName = styled.span`
@@ -173,20 +172,21 @@ export const SelectWrapper = styled.div`
 	position: relative;
 `;
 
-export const SelectTitle = styled.div`
+export const SelectTitle = styled.span`
+	position: sticky;
+	top: calc(50%);
 	color: #000;
 	font-family: Noto Sans KR_Medium;
 	font-size: 20px;
 `;
 
 export const List = styled.div`
+	height: 100%;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
 	width: 400px;
-	height: 100%;
 `;
-//강의명 임시로 괜찮게 보이도록 마진 설정함
 export const List2 = styled.div`
 	height: 100%;
 	display: flex;
