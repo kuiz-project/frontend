@@ -143,13 +143,13 @@ export const LectureUploadWrapper = styled.section`
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 38px;
 `;
 
 export const SelectWrapper = styled.div`
 	border-radius: 16px;
 	width: 90%;
-	height: 200px;
+	height: 25vh;
 	background-color: white;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.12);
 	display: flex;
@@ -202,6 +202,10 @@ export const SelectItem = styled.button`
 	font-size: 20px;
 	display: flex;
 	align-items: center;
+	transition: all 0.3s ease-out 0s;
+	&:hover {
+		color: black;
+	}
 `;
 
 export const FileUploadWrapper = styled.div`

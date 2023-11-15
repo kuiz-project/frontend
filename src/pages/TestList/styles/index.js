@@ -49,8 +49,6 @@ export const TestTitleSmallTitle = styled.div`
 export const TestTitleMain = styled.div`
 	font-family: Noto Sans KR;
 	font-size: 16px;
-	font-style: normal;
-	font-weight: 500;
 	line-height: normal;
 	margin-top: 1px;
 	margin-left: 48px;
@@ -61,8 +59,9 @@ export const TestTitle = styled.div`
 	border-radius: 8px 8px 0px 0px;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 	background: #d3d3d3;
+	padding: 10px;
 	margin-bottom: 4px;
-	padding-top: 0.1px;
+	padding: 10px 0;
 `;
 
 export const TestProblem = styled.div`
@@ -210,6 +209,8 @@ export const StickyFooter = styled.footer`
 	position: absolute;
 	z-index: 5;
 	bottom: 0;
+	display: flex;
+	justify-content: flex-end;
 `;
 
 export const SubmitButton = styled.button`
@@ -222,7 +223,6 @@ export const SubmitButton = styled.button`
 	justify-content: center;
 	align-items: center;
 	border-radius: 44px;
-	margin-left: auto;
 	font-size: 16px;
 
 	background-color: ${({ isLoading }) => (isLoading ? "#e1e1e1" : "#312e81")};
@@ -246,6 +246,7 @@ export const IncorrectAnswerNotice = styled.div`
 	border-radius: 0px 0px 8px 8px;
 	background: white;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+	line-height: 25px;
 `;
 export const Spinner = styled.img`
 	width: 75px;
