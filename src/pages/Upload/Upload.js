@@ -4,12 +4,14 @@ import close from "../../assets/images/dir_close.svg";
 import open from "../../assets/images/dir_open.svg";
 import add from "../../assets/images/add.svg";
 import trash from "../../assets/images/trash.svg";
+import xbutton from "../../assets/images/xbutton.png";
 import edit from "../../assets/images/edit.svg";
 import spinner from "../../assets/images/spinner.gif";
 import * as S from "./styles/index";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { currentFileState } from "../../recoil/atom";
+
 import {
 	createfolderPostAPI,
 	deletefoldernameAPI,
@@ -516,6 +518,16 @@ const Upload = () => {
 						<S.List2>
 							{subjects.map((subject, index) => (
 								<>
+									{index === 0 && (
+										<div className="inputBox">
+											<input
+												className="subjectInput"
+												type="text"
+												placeholder="강의명을 검색해보세요"
+											></input>
+											<img src={xbutton} alt="x버튼" />
+										</div>
+									)}
 									<S.SelectItem
 										isSelected={subject.isSelected}
 										onClick={() => handleToggleSubject(subject)}

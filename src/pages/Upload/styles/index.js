@@ -29,6 +29,10 @@ export const DirName = styled.span`
 	color: ${({ isSelected }) => (isSelected ? "#fff" : "#424242")};
 	font-size: 14px;
 	font-family: "Noto Sans KR_Medium";
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	word-break: break-all;
 `;
 
 export const DirInput = styled.input`
@@ -42,6 +46,7 @@ export const DirInput = styled.input`
 export const DirLeft = styled.div`
 	display: flex;
 	gap: 8px;
+	width: 100%;
 `;
 export const DirEditBtn = styled.button`
 	font-size: 15px;
@@ -193,6 +198,33 @@ export const List2 = styled.div`
 	flex-wrap: wrap;
 	gap: 8px;
 	width: 400px;
+	input::-webkit-input-placeholder {
+		font-family: Noto Sans KR_Medium;
+		font-size: 18px;
+		color: #b4b4b4;
+	}
+	.inputBox {
+		position: relative;
+		img {
+			position: absolute;
+			right: 15px;
+			top: 27px;
+			cursor: pointer;
+			width: 18px;
+			height: 18px;
+		}
+		.subjectInput {
+			width: 100%;
+			border-radius: 10px;
+			background: var(--Gray10, #f9fafb);
+			height: 68px;
+			padding: 14px;
+			gap: 14px;
+			font-family: Noto Sans KR_Medium;
+			font-size: 18px;
+			color: #b4b4b4;
+		}
+	}
 `;
 export const SelectItem = styled.button`
 	height: 45px;
