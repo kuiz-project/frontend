@@ -50,10 +50,7 @@ const Upload = () => {
 		if (e.target.value === "") {
 			fetchSubjects();
 		}
-		setSearchSubject(e.target.value);
-	};
-	const handleSearchEnter = (e) => {
-		if (e.key === "Enter" && subjects.length) {
+		if (subjects.length) {
 			const targetSubjects = subjects.filter((subject) =>
 				subject.subjectName.toLowerCase().startsWith(searchSubject)
 			);
@@ -63,6 +60,7 @@ const Upload = () => {
 				setSubjects([]);
 			}
 		}
+		setSearchSubject(e.target.value);
 	};
 
 	const fetchSubjects = async () => {
@@ -559,7 +557,6 @@ const Upload = () => {
 									className="subjectInput"
 									type="text"
 									onChange={handleSearch}
-									onKeyDown={handleSearchEnter}
 									value={searchSubject}
 									placeholder="강의명을 검색해보세요"
 								></input>

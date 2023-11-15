@@ -213,14 +213,14 @@ export const List2 = styled.div`
 		position: relative;
 		img {
 			position: absolute;
-			right: 15px;
+			right: -125px;
 			top: 27px;
 			cursor: pointer;
 			width: 18px;
 			height: 18px;
 		}
 		.subjectInput {
-			width: 100%;
+			width: 150%;
 			border-radius: 10px;
 			background: var(--Gray10, #f9fafb);
 			height: 68px;
