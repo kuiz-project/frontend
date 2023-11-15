@@ -40,9 +40,47 @@ const Upload = () => {
 	const [formData, setFormData] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [isErrorModal, setIsErrorModal] = useState(false);
+	const [searchSubject, setSearchSubject] = useState("");
 
 	const leaveModal = () => {
 		setIsErrorModal(false);
+	};
+
+	const handleSearch = (e) => {
+		if (e.target.value === "") {
+			fetchSubjects();
+		}
+		setSearchSubject(e.target.value);
+	};
+	const handleSearchEnter = (e) => {
+		if (e.key === "Enter" && subjects.length) {
+			const targetSubjects = subjects.filter((subject) =>
+				subject.subjectName.toLowerCase().startsWith(searchSubject)
+			);
+			if (targetSubjects.length) {
+				setSubjects(targetSubjects);
+			} else {
+				setSubjects([]);
+			}
+		}
+	};
+
+	const fetchSubjects = async () => {
+		const res = await pdfsubjectAPI.get();
+		try {
+			if (res.status === 200) {
+				const updatedSubjects = res.data.subject.map((subject) => {
+					return {
+						subjectName: subject,
+						isSelected: false,
+					};
+				});
+				setSubjects(updatedSubjects);
+			}
+		} catch (e) {
+			setIsErrorModal(true);
+			console.log(e);
+		}
 	};
 
 	const fetchInitialData = async () => {
@@ -516,18 +554,26 @@ const Upload = () => {
 					<S.SelectWrapper>
 						<S.SelectTitle>강의명</S.SelectTitle>
 						<S.List2>
+							<div className="inputBox">
+								<input
+									className="subjectInput"
+									type="text"
+									onChange={handleSearch}
+									onKeyDown={handleSearchEnter}
+									value={searchSubject}
+									placeholder="강의명을 검색해보세요"
+								></input>
+								<img
+									src={xbutton}
+									alt="x버튼"
+									onClick={() => {
+										setSearchSubject("");
+										fetchSubjects();
+									}}
+								/>
+							</div>
 							{subjects.map((subject, index) => (
 								<>
-									{index === 0 && (
-										<div className="inputBox">
-											<input
-												className="subjectInput"
-												type="text"
-												placeholder="강의명을 검색해보세요"
-											></input>
-											<img src={xbutton} alt="x버튼" />
-										</div>
-									)}
 									<S.SelectItem
 										isSelected={subject.isSelected}
 										onClick={() => handleToggleSubject(subject)}

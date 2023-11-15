@@ -191,6 +191,9 @@ export const List = styled.div`
 	flex-wrap: wrap;
 	gap: 8px;
 	width: 400px;
+	justify-content: flex-start;
+	align-content: flex-start;
+	align-items: flex-start;
 `;
 export const List2 = styled.div`
 	height: 100%;
@@ -198,6 +201,9 @@ export const List2 = styled.div`
 	flex-wrap: wrap;
 	gap: 8px;
 	width: 400px;
+	justify-content: flex-start;
+	align-content: flex-start;
+	align-items: flex-start;
 	input::-webkit-input-placeholder {
 		font-family: Noto Sans KR_Medium;
 		font-size: 18px;
