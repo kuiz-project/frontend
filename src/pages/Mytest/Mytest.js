@@ -58,9 +58,6 @@ const Mytest = () => {
 		<S.MytestWrapper>
 			<div className="left_header">
 				<div className="left_header_top">나의 시험지</div>
-				<div className="left_header_bottom">
-					나의 시험지를 통해 틀린 문제를 점검하고 무엇무엇을 향상시켜보세요
-				</div>
 			</div>
 			<div className="mytest_left">
 				<div className="left_body">
